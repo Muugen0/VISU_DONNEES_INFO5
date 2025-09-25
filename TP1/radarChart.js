@@ -5,12 +5,67 @@ function parseCGPA(str) {
   return mapping[raw] ?? null;
 }
 
+// Update radar chart
+function updateChart() {
+  const filtered = filterData();
+  const noData = filtered.length === 0;
+  d3.select("#noDataMsg").style("display", noData ? "block" : "none");
+  d3.select("#chart").selectAll("*").remove();
+  //if(noData) return;
+
+  const averages = [
+    d3.mean(filtered, d => d.depression),
+    d3.mean(filtered, d => d.anxiety),
+    d3.mean(filtered, d => d.panic)
+  ];
+
+  const width = document.getElementById("chart").clientWidth;
+  const height = document.getElementById("chart").clientHeight;
+  let radius = Math.min(width, height)/2 - 50;
+  radius = Math.max(radius, 100);
+  const angleSlice = (2*Math.PI)/radarAxes.length;
+
+  const svg = d3.select("#chart").append("svg")
+    .attr("width", width).attr("height", height)
+    .append("g").attr("transform", `translate(${width/2},${height/2})`);
+
+  const rScale = d3.scaleLinear().domain([0,1]).range([0,radius]);
+
+  // Grid
+  for(let level=1; level<=5; level++){
+    svg.append("circle").attr("r", radius/5*level).attr("fill","none").attr("stroke","#CDCDCD").attr("stroke-dasharray","2,2");
+  }
+
+  // Axes
+  radarAxes.forEach((axis,i)=>{
+    const angle = i*angleSlice - Math.PI/2;
+    const x = rScale(1)*Math.cos(angle);
+    const y = rScale(1)*Math.sin(angle);
+    svg.append("line").attr("x1",0).attr("y1",0).attr("x2",x).attr("y2",y).attr("stroke","#888");
+    svg.append("text").attr("x",x*1.1).attr("y",y*1.1).attr("text-anchor","middle").attr("alignment-baseline","middle").text(axis);
+  });
+
+  // Polygon
+  const line = d3.lineRadial().radius(d=>rScale(d)).angle((d,i)=>i*angleSlice).curve(d3.curveLinearClosed);
+  svg.append("path").datum(averages).attr("d",line).attr("fill","rgba(0,123,255,0.3)").attr("stroke","#007bff").attr("stroke-width",2);
+
+  // Points + tooltip
+  const tooltip = d3.select("body").append("div").attr("class","tooltip");
+  svg.selectAll(".point").data(averages).enter().append("circle")
+    .attr("cx",(d,i)=>rScale(d)*Math.cos(i*angleSlice - Math.PI/2))
+    .attr("cy",(d,i)=>rScale(d)*Math.sin(i*angleSlice - Math.PI/2))
+    .attr("r",5).attr("fill","#007bff")
+    .on("mouseover", (event,d,i)=>{ tooltip.style("opacity",1).html(`${radarAxes[i]}: ${d.toFixed(2)}`); })
+    .on("mousemove", event=>{ tooltip.style("left",(event.pageX+10)+"px").style("top",(event.pageY-10)+"px"); })
+    .on("mouseout", ()=>{ tooltip.style("opacity",0); });
+}
+
 // Radar chart axes
 const radarAxes = ["Dépression", "Anxiété", "Crise de panique"];
 let dataGlobal = [];
 
 // Load CSV
-d3.csv("Student_Mental_health.csv").then(data => {
+d3.csv("http://localhost:8000/VISU_DONNEES_INFO5/TP1/dataset/Student_Mental_health.csv").then(data => {
   dataGlobal = data.map(d => ({
     gender: d["Choose your gender"]?.toLowerCase(),
     year: d["Your current year of Study"]?.toLowerCase(),
@@ -23,7 +78,7 @@ d3.csv("Student_Mental_health.csv").then(data => {
   }));
 
   initSliders();
-  updateChart();
+  setTimeout(updateChart, 0);
 
 }).catch(err => {
   console.error("Failed to load CSV:", err);
@@ -104,58 +159,4 @@ function filterData() {
     const cgpaMatch = d.cgpa >= f.cgpaMin && d.cgpa <= f.cgpaMax;
     return genderMatch && yearMatch && maritalMatch && ageMatch && cgpaMatch;
   });
-}
-
-// Update radar chart
-function updateChart() {
-  const filtered = filterData();
-  const noData = filtered.length === 0;
-  d3.select("#noDataMsg").style("display", noData ? "block" : "none");
-  d3.select("#chart").selectAll("*").remove();
-  //if(noData) return;
-
-  const averages = [
-    d3.mean(filtered, d => d.depression),
-    d3.mean(filtered, d => d.anxiety),
-    d3.mean(filtered, d => d.panic)
-  ];
-
-  const width = document.getElementById("chart").clientWidth;
-  const height = document.getElementById("chart").clientHeight;
-  const radius = Math.min(width, height)/2 - 50;
-  const angleSlice = (2*Math.PI)/radarAxes.length;
-
-  const svg = d3.select("#chart").append("svg")
-    .attr("width", width).attr("height", height)
-    .append("g").attr("transform", `translate(${width/2},${height/2})`);
-
-  const rScale = d3.scaleLinear().domain([0,1]).range([0,radius]);
-
-  // Grid
-  for(let level=1; level<=5; level++){
-    svg.append("circle").attr("r", radius/5*level).attr("fill","none").attr("stroke","#CDCDCD").attr("stroke-dasharray","2,2");
-  }
-
-  // Axes
-  radarAxes.forEach((axis,i)=>{
-    const angle = i*angleSlice - Math.PI/2;
-    const x = rScale(1)*Math.cos(angle);
-    const y = rScale(1)*Math.sin(angle);
-    svg.append("line").attr("x1",0).attr("y1",0).attr("x2",x).attr("y2",y).attr("stroke","#888");
-    svg.append("text").attr("x",x*1.1).attr("y",y*1.1).attr("text-anchor","middle").attr("alignment-baseline","middle").text(axis);
-  });
-
-  // Polygon
-  const line = d3.lineRadial().radius(d=>rScale(d)).angle((d,i)=>i*angleSlice).curve(d3.curveLinearClosed);
-  svg.append("path").datum(averages).attr("d",line).attr("fill","rgba(0,123,255,0.3)").attr("stroke","#007bff").attr("stroke-width",2);
-
-  // Points + tooltip
-  const tooltip = d3.select("body").append("div").attr("class","tooltip");
-  svg.selectAll(".point").data(averages).enter().append("circle")
-    .attr("cx",(d,i)=>rScale(d)*Math.cos(i*angleSlice - Math.PI/2))
-    .attr("cy",(d,i)=>rScale(d)*Math.sin(i*angleSlice - Math.PI/2))
-    .attr("r",5).attr("fill","#007bff")
-    .on("mouseover", (event,d,i)=>{ tooltip.style("opacity",1).html(`${radarAxes[i]}: ${d.toFixed(2)}`); })
-    .on("mousemove", event=>{ tooltip.style("left",(event.pageX+10)+"px").style("top",(event.pageY-10)+"px"); })
-    .on("mouseout", ()=>{ tooltip.style("opacity",0); });
 }

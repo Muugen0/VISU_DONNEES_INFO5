@@ -65,7 +65,7 @@ const radarAxes = ["Dépression", "Anxiété", "Crise de panique"];
 let dataGlobal = [];
 
 // Load CSV
-d3.csv("http://localhost:8000/VISU_DONNEES_INFO5/TP1/dataset/Student_Mental_health.csv").then(data => {
+d3.csv("http://localhost:8000/TP1/dataset/Student_Mental_health.csv").then(data => {
   dataGlobal = data.map(d => ({
     gender: d["Choose your gender"]?.toLowerCase(),
     year: d["Your current year of Study"]?.toLowerCase(),

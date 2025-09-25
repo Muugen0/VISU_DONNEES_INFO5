@@ -17,4 +17,12 @@ une zone par employment status et une barre par donné quantitative dans chaque 
 
 
 https://www.kaggle.com/datasets/mahdimashayekhi/mental-health?resource=download
- 
+
+
+Reste à faire pour le radar chart :
+ - finir les traductions
+ - centrer le graph
+ - régler les valeurs pour le slider CGPA (il y a deux valeurs 3)
+ - corriger le 1er chargement du graphique (il ne s'affiche pas)
+ - ajouter des commentaire sur l'étude (ce que montre) ce graphique
+ - détailler et justifier les choix des variables utilisés pour représenter les données

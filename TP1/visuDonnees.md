@@ -17,9 +17,3 @@ une zone par employment status et une barre par donné quantitative dans chaque 
 
 
 https://www.kaggle.com/datasets/mahdimashayekhi/mental-health?resource=download
-
-
-Reste à faire pour le radar chart :
- - passer les valeurs en pourcentage et afficher l'échelle sur le graphique
- - ajouter des commentaires sur l'étude (ce que montre) ce graphique
- - détailler et justifier les choix des variables utilisées pour représenter les données

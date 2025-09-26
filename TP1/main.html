@@ -1,92 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Visualisation Santé Mentale</title>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet", href="main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Visualisation Santé Mentale</title>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
+		<link rel="stylesheet", href="main.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+	</head>
+	<body>
+		<div style="position:sticky;">
+		<!-- En-tête -->
+		<header>
+			<h1>Visualisation de la Santé Mentale des Étudiants</h1>
+			<p>Analyse des données liées au bien-être, à l’anxiété et à la dépression</p>
+		</header>
 
-  <!-- En-tête -->
-  <header>
-    <h1>Visualisation de la Santé Mentale des Étudiants</h1>
-    <p>Analyse des données liées au bien-être, à l’anxiété et à la dépression</p>
-  </header>
+		<!-- Menu -->
+		<nav>
+			<button class="tablink active" data-target="tab1">Graphique 1</button>
+			<button class="tablink" data-target="tab2">Graphique 2</button>
+			<button class="tablink" data-target="tab3">Graphique 3</button>
+		</nav>
+		</div>
 
-  <!-- Menu -->
-  <nav>
-    <button class="tablink active" data-target="tab1">Graph 1</button>
-    <button class="tablink" data-target="tab2">Graph 2</button>
-    <button class="tablink" data-target="tab3">Graph 3</button>
-  </nav>
+		<!-- Conteneurs -->
+		<div id="tab1" class="tabcontent active">
+			<h2>Titre</h2>
+			<div id="chart1" class="chart"></div>
+		</div>
 
-  <!-- Conteneurs -->
-  <div id="tab1" class="tabcontent active">
-    <h2>Titre</h2>
-    <div id="chart1" class="chart"></div>
-  </div>
+		<div id="tab2" class="tabcontent">
+			<h2>Titre</h2>
+			<div id="chart2" class="chart"></div>
+		</div>
 
-  <div id="tab2" class="tabcontent">
-    <h2>Titre</h2>
-    <div id="chart2" class="chart"></div>
-  </div>
+		<div id="tab3" class="tabcontent">
+			<h2>Pourcentage d'étudiants sujet à l'anxiété, aux dépressions et aux crises de panique</h2>
+			<div style="display:flex;">	
+			<div class="controls">
 
-  <div id="tab3" class="tabcontent">
-    <h2>Radar Chart</h2>
-    <div class="controls">
-    
-      <div class="control-group">
-        <h3>Genre</h3>
-        <label><input type="checkbox" class="gender" value="male"> Homme</label>
-        <label><input type="checkbox" class="gender" value="female"> Femme</label>
-      </div>
-    
-      <div class="control-group">
-        <h3>Year in Study</h3>
-        <label><input type="checkbox" class="year" value="year 1"> Année 1</label>
-        <label><input type="checkbox" class="year" value="year 2"> Année 2</label>
-        <label><input type="checkbox" class="year" value="year 3"> Année 3</label>
-        <label><input type="checkbox" class="year" value="year 4"> Année 4</label>
-      </div>
-    
-      <div class="control-group">
-        <h3>Marital Status</h3>
-        <label><input type="checkbox" class="marital" value="yes"> Marié</label>
-      </div>
-    
-      <div class="control-group">
-        <h3>Âge</h3>
-        <div id="ageSlider" class="slider-container"></div>
-        <div>Min: <span id="ageMinVal"></span> - Max: <span id="ageMaxVal"></span></div>
-      </div>
-    
-      <div class="control-group">
-        <h3>Score CGPA</h3>
-        <div id="cgpaSlider" class="slider-container"></div>
-        <div>Min: <span id="cgpaMinVal"></span> - Max: <span id="cgpaMaxVal"></span></div>
-      </div>
-    
-    </div>
-    
-    <div id="chart"></div>
-    <div class="no-data" id="noDataMsg" style="display:none;">Aucune donnée disponible pour ces filtres.</div>    
-    <script src="radarChart.js"></script>
-  </div>
+				<div class="control-group">
+					<h3>Genre</h3>
+					<label><input type="checkbox" class="gender" value="male"> Homme</label>
+					<label><input type="checkbox" class="gender" value="female"> Femme</label>
+				</div>
 
-  <script>
-    // === Gestion du menu d’onglets ===
-    document.querySelectorAll(".tablink").forEach(button => {
-      button.addEventListener("click", () => {
-        document.querySelectorAll(".tablink").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tabcontent").forEach(tab => tab.classList.remove("active"));
-        button.classList.add("active");
-        document.getElementById(button.dataset.target).classList.add("active");
-      });
-    });
-  </script>
-</body>
+				<div class="control-group">
+					<h3>Année d'étude</h3>
+					<label><input type="checkbox" class="year" value="year 1"> Année 1</label>
+					<label><input type="checkbox" class="year" value="year 2"> Année 2</label>
+					<label><input type="checkbox" class="year" value="year 3"> Année 3</label>
+					<label><input type="checkbox" class="year" value="year 4"> Année 4</label>
+				</div>
+
+				<div class="control-group">
+					<h3>Etat civil</h3>
+					<label><input type="checkbox" class="marital" value="yes"> Marié</label>
+				</div>
+
+				<div class="control-group">
+					<h3>Âge</h3>
+					<div id="ageSlider" class="slider-container"></div>
+				</div>
+
+				<div class="control-group">
+					<h3>Score CGPA</h3>
+					<div id="cgpaSlider" class="slider-container"></div>
+				</div>
+
+			</div>
+			
+			<div style="padding-left:25%">
+			<div id="chart"></div>
+			<div class="no-data" id="noDataMsg" style="display:none;">Aucune donnée disponible pour ces filtres.</div>    
+			<script src="radarChart.js"></script>
+			</div>
+			</div>
+
+			<h2>Analyse du graphique</h2>
+			<p>
+			Cet ensemble de données a été collecté par une enquête menée par Google Forms auprès d'étudiants universitaires afin d'examiner leur situation académique actuelle et leur santé mentale. Toutes les données sont basées sur la Malaisie et collectées auprès de l'Iium (Université islamique internationale de Malaisie).
+			</p>
+			<h2>Justification des variables choisies</h2>
+			<p>Genre : échelle nominale</p>
+			<p>Année d'étude : échelle ordinale</p>
+			<p>Age : échelle rapport</p>
+			<p>Score CGPA : échelle rapport</p>
+			<p>Ce graphique permet d'illustrer la santé mentale à travers trois axes : la dépression, l'anxiété et les crises de panique. C'est pourquoi nous avons opté pour un radar chart pour effectuer la visualisation de ces données.</p>
+			<p>Une échelle nominale pour les trois axes d'indication de santé mentale.</p>
+			<p>Une échelle de rapport pour représenter la moyenne des étudiants par axe.</p>
+			<p></p>
+		</div>
+
+		<script>
+			// === Gestion du menu d’onglets ===
+			document.querySelectorAll(".tablink").forEach(button => {
+							button.addEventListener("click", () => {
+											document.querySelectorAll(".tablink").forEach(b => b.classList.remove("active"));
+											document.querySelectorAll(".tabcontent").forEach(tab => tab.classList.remove("active"));
+											button.classList.add("active");
+											document.getElementById(button.dataset.target).classList.add("active");
+										});
+						});
+		</script>
+	</body>
 </html>
 

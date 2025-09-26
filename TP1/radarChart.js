@@ -19,8 +19,10 @@ function updateChart() {
     d3.mean(filtered, d => d.panic)
   ];
 
-  const width = document.getElementById("chart").clientWidth;
-  const height = document.getElementById("chart").clientHeight;
+  let width = document.getElementById("chart").clientWidth;
+  let height = document.getElementById("chart").clientHeight;
+  width = Math.max(width, 500);
+  height = Math.max(height, 500);
   let radius = Math.min(width, height)/2 - 50;
   radius = Math.max(radius, 100);
   const angleSlice = (2*Math.PI)/radarAxes.length;
@@ -32,9 +34,11 @@ function updateChart() {
   const rScale = d3.scaleLinear().domain([0,1]).range([0,radius]);
 
   // Grid
-  for(let level=1; level<=5; level++){
-    svg.append("circle").attr("r", radius/5*level).attr("fill","none").attr("stroke","#CDCDCD").attr("stroke-dasharray","2,2");
+  for(let level=1; level<=10; level++){
+    svg.append("circle").attr("r", radius/10*level).attr("fill","none").attr("stroke","#CDCDCD").attr("stroke-dasharray","2,2");
   }
+  
+  // Display text for %
 
   // Axes
   radarAxes.forEach((axis,i)=>{
@@ -55,7 +59,7 @@ function updateChart() {
     .attr("cx",(d,i)=>rScale(d)*Math.cos(i*angleSlice - Math.PI/2))
     .attr("cy",(d,i)=>rScale(d)*Math.sin(i*angleSlice - Math.PI/2))
     .attr("r",5).attr("fill","#007bff")
-    .on("mouseover", (event,d,i)=>{ tooltip.style("opacity",1).html(`${radarAxes[i]}: ${d.toFixed(2)}`); })
+    .on("mouseover", (event,d,i)=>{ tooltip.style("opacity",1).html(`${radarAxes[i]}: ${d.toFixed(2)*100}%`); })
     .on("mousemove", event=>{ tooltip.style("left",(event.pageX+10)+"px").style("top",(event.pageY-10)+"px"); })
     .on("mouseout", ()=>{ tooltip.style("opacity",0); });
 }
@@ -100,8 +104,6 @@ function initSliders(){
   const ageSlider = document.getElementById('ageSlider').noUiSlider;
 
   ageSlider.on('update', function(values){
-    document.getElementById('ageMinVal').textContent = values[0];
-    document.getElementById('ageMaxVal').textContent = values[1];
     updateChart();
   });
 
@@ -112,15 +114,12 @@ function initSliders(){
     step: 0.5,
     range: { min: 0, max: 4 },
     tooltips: [true,true],
-    pips: { mode: 'values', values: [0,2,2.5,3,4], density: 100 },
     format: { to: v => parseFloat(v), from: v => parseFloat(v) }
   });
 
   const cgpaSlider = document.getElementById('cgpaSlider').noUiSlider;
 
   cgpaSlider.on('update', function(values){
-    document.getElementById('cgpaMinVal').textContent = values[0];
-    document.getElementById('cgpaMaxVal').textContent = values[1];
     updateChart();
   });
 

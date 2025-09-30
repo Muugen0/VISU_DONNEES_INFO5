@@ -17,12 +17,16 @@
 			<h1>Visualisation de la Santé Mentale des Étudiants</h1>
 			<p>Analyse des données liées au bien-être, à l’anxiété et à la dépression</p>
 		</header>
-
+	
 		<!-- Menu -->
 		<nav>
-			<button class="tablink active" data-target="tab1">Graphique 1</button>
+			<button class="tablink active" data-target="tab1">
+				<a href="http://localhost:8000/TP1/map_europe.html">Graphique 1</a>
+			</button>
 			<button class="tablink" data-target="tab2">Graphique 2</button>
-			<button class="tablink" data-target="tab3">Graphique 3</button>
+			<button class="tablink" data-target="tab3">
+				<a href="http://localhost:8000/TP1/student_health.html">Graphique 3</a>
+			</button>
 		</nav>
 	</div>
 
@@ -103,17 +107,6 @@
 		</p>
 	</div>
 
-	<script>
-		// === Gestion du menu d’onglets ===
-		document.querySelectorAll(".tablink").forEach(button => {
-			button.addEventListener("click", () => {
-				document.querySelectorAll(".tablink").forEach(b => b.classList.remove("active"));
-				document.querySelectorAll(".tabcontent").forEach(tab => tab.classList.remove("active"));
-				button.classList.add("active");
-				document.getElementById(button.dataset.target).classList.add("active");
-			});
-		});
-	</script>
 </body>
 
 </html>

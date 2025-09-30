@@ -3,15 +3,38 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Euro-stat map</title>
+	<link rel="stylesheet" , href="main.css">
+	<title>Euro-stat map</title>
     </head>
 
     <body>
-        <svg id="map"></svg>
+	<div style="position:sticky;">
+                <!-- En-tête -->
+                <header>
+                        <h1>Visualisation de la Santé Mentale</h1>
+                        <p>Analyse des données liées au bien-être, à l’anxiété et à la dépression</p>
+                </header>
+
+                <!-- Menu -->
+                <nav>
+                        <button class="tablink active" data-target="tab1">
+                                <a href="http://localhost:8000/TP1/map_europe.html">Graphique 1</a>
+                        </button>
+                        <button class="tablink" data-target="tab2">Graphique 2</button>
+                        <button class="tablink" data-target="tab3">
+                                <a href="http://localhost:8000/TP1/student_health.html">Graphique 3</a>
+                        </button>
+                </nav>
+        </div>
+	<div style="padding: 30px;">
+	<div style="display: flex;">
+        <p> Voir les différences entre 2014 et 2019 : </p>
+        <button type="button" id="2014_button" style="margin: 10px;">2014</button>
+        <button type="button" id="2019_button" style="margin: 10px;">2019</button>
+	</div>
+	<svg id="map"></svg>
         <script src="https://unpkg.com/eurostat-map"></script>
-        <p> "Check the difference between 2014 and 2019</p>
-        <button type="button" id="2014_button">2014</button>
-        <button type="button" id="2019_button">2019</button>
-        <script src="build/map_europe.js"></script>
+        <script src="map_europe.js"></script>
+	</div>
     </body>
 </html>

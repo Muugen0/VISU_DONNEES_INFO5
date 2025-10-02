@@ -1,3 +1,56 @@
+body {
+    font-family: "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    background: #f0f9f8;
+    color: #333;
+}
+
+
+header {
+    background: linear-gradient(135deg, #56cc9d, #3a8fb7);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background: #e6f4f1;
+    padding: 10px;
+    box-shadow: inset 0 -2px 5px rgba(0,0,0,0.05);
+}
+
+nav button {
+    background: #d1eeea;
+    color: #2b6a6c;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+    background: #b8e0dc;
+    transform: translateY(-2px);
+}
+
+nav button.active {
+    background: #3a8fb7;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
 .bubbles {
     stroke-width: 1px;
     stroke: black;
@@ -20,9 +73,9 @@
 
 div.radio-toolbar{
 	position: absolute;
-	top: 25%;
+	top: 240px;
 	right: 2%;
-	width:	300px;
+	width: 350px;
 	border: 0px solid black;
 	margin-left: 10px;
 }
@@ -75,7 +128,8 @@ div.radio-toolbar div#d4 label {
 }
 div.titreradio{
 	font-size:14px;
-	margin: 20px;
+	margin-top: 25px;
+	margin-bottom: 5px;
 	margin-left:50px;
 }
 .radio-toolbar input[type="radio"]#r0:focus + label {

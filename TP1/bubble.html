@@ -5,12 +5,38 @@
     <title>Visualisation Santé Mentale</title>
     <script src="https://d3js.org/d3.v6.js"></script>
     <link rel="stylesheet", href="bubble.css">
+	
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
   </head>
   <body>
+    <div style="position:sticky; margin-bottom: 30px;">
+			<!-- En-tête -->
+			<header>
+				<h1>Corrélation entre anxiété et dépression</h1>
+			</header>
+
+			<!-- Menu -->
+			<nav>
+				<a href="http://localhost:8000/TP1/main.html">
+					<button class="tablink" data-target="tab1">
+						Graphique 1
+					</button>
+				</a>
+				<a href="http://localhost:8000/TP1/bubble.html">
+					<button class="tablink active" data-target="tab2">
+						Graphique 2
+					</button>
+				</a>
+				<a href="http://localhost:8000/TP1/student_health.html">
+					<button class="tablink" data-target="tab3">
+						Graphique 3
+					</button>
+				</a>
+			</nav>
+		</div>
     <div class="radio-toolbar">
-      <div class="titreradio">
+      <div class="titreradio" style="margin-top: 150px;">
         Genre
       </div>
       <div id="d0">
@@ -37,7 +63,7 @@
     <div id="bubble_plot">
       <script src="bubble.js"></script>
     </div>
-    <div>
+    <div style="margin-left: 15px; margin-right: 15px;">
       <p>
         Nous avons étudiés l'impact du stress, de l'anxieté et de la dépression sur la santée mantale chez les individus
         en fonction de leur genre et de leur age.

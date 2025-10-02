@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Santé mentale des 15–24 ans (UE)</title>
+  <style>
+    #controls {
+      margin: 10px 0;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    #map {
+      width: 1080px;
+      height: 1000px;
+      border: 1px solid #eee;
+    }
+    body {
+        font-family: Inter, system-ui, sans-serif;
+        line-height: 1.6;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #1f2937;
+        background: #f9fafb;
+        }
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        }
+    h2 {
+        margin-top: 2rem;
+        font-size: 1.4rem;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: .3rem;
+        }
+    p { margin: 0.8rem 0; }
+    ul { margin: 0.8rem 0 0.8rem 1.5rem; }
+  </style>
+</head>
+<body>
+    <h1>Santé mentale des adolescents et jeunes adultes dans l’UE</h1>
+  <div id="controls">
+    <label>
+      Year:
+      <select id="yearSelect">
+        <option value="2014">2014</option>
+        <option value="2019">2019</option>
+      </select>
+    </label>
+
+    <label>
+      Sex:
+      <select id="sexSelect">
+        <option value="T">Total</option>
+        <option value="M">Male</option>
+        <option value="F">Female</option>
+      </select>
+    </label>
+
+    <label>
+      Edu:
+      <select id="eduSelect">
+        <option value="ED0-2">Less than primary, primary and lower secondary</option>
+        <option value="ED3_4">Upper secondary and post-secondary non tertiary</option>
+        <option value="ED5-8">Tertiary education</option>
+        <option value="TOTAL">Total</option>
+      </select>
+    </label>
+
+    <button id="updateBtn">Update map</button>
+  </div>
+
+  <svg id="map"></svg>
+
+  <script src="https://unpkg.com/eurostat-map"></script>
+  <script src="build/map.js"></script>
+
+
+    <p>Nous avons voulu étudier les différences entre les pays de l'UE concernant la santé mentale des adolescents/ jeunes adultes. De ce fait, nous avons comparé le pourcentage de la population agée entre 15 er 24 ans qui signale avoir consulté un professionnel de la santé mentale (psychologue, psychiatre, etc..) et ce en tenant compte aussi de leur niveau d'éducation.</p>
+
+
+<p>Nous montrons donc la comparaison pour chaque pays de l'UE entre 2014 et 2019, en tenant aussi compte du genre pour constater la différence. Compte tenu du fait que nous avons un seul indicateur (le pourcentage) sur plusieurs pays, nous avons choisi d'utiliser une carte pour la représentation.</p>
+
+
+<h2>Variables étudiées</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Type / Echelle de mesure</th>
+<th>Variables visuelles présentes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pays</td>
+<td>Nominale</td>
+<td>Position, Forme, Taille</td>
+</tr>
+<tr>
+<td>Pourcentage</td>
+<td>Rapport</td>
+<td>Saturation</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Les options au dessus de la carte nous permettent de filter la tranche de population qui nous interesse : Par exemple, on peut spécificement voir le pourcentage des hommes dans l'éducation supérieure qui ont consulté un médecin.</p>
+
+
+<h2>Tableau de Mackinlay</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Attribut visuel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quantitative</td>
+<td>Saturation (Pourcentage)</td>
+</tr>
+<tr>
+<td>Nominale</td>
+<td>Position (Pays) / Forme (Pays) / Aire (Pays)</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>La visualisation permet donc de se déplacer sur la carte et de visualiser le pourcentage précis pour chaque pays, ainsi de changer les options pour filtrer la tranche de population voulue.</p>
+
+
+<h2>Avantages</h2>
+<ul>
+<li>Les couleurs permettent rapidement de comparer les pays entre eux.</li>
+<li>Les options permettent de faire plusieurs comparaisons sur la même carte.</li>
+<li>La carte fournit des infos exactes sur le pays si on passe le curseur de la souris au dessus.</li>
+</ul>
+
+
+<h2>Limites</h2>
+<ul>
+<li>Le rapport de la légende change pour chaque option, ce qui facilite la comparaison entre pays, mais rend plus dure la comparaison entre options (un pays orange peut représenter 5% de la population pour une option et 10% pour une autre).</li>
+<li>L'utilisation de la saturation (et donc d'une seule plage de couleur) peut être dur à percevoir.</li>
+</ul>
+
+
+<h2>Analyse</h2>
+<p>Nous avons remarqué en général une augmentation des nombres de consulations entre 2014 et 2019, avec un gain constaté de 50% dans la plupart des pays. De plus, les femmes ont plus tendance à visiter un professionnel de la santé mentale (+70% relativement aux hommes). Finalement, le niveau d'éducation a aussi un impact sur le nombre de consultations, tels que les personnes n'ayant pas fait d'études supérieures ont un pourcentage nettement plus élevé de consultations.</p>
+
+
+<p>Les pays avec les pourcentages de consultations les plus élevées (que ce soit en 2014 ou 2019) sont la Suède et l'Islande, tandis que les pourcentages les plus bas sont dans les Balkans (Bulgarie, Roumanie, Serbie, etc...).</p>
+</body>
+</body>
+</html>

@@ -1,7 +1,7 @@
 function parseCGPA(str) {
-  if(!str) return null;
-  const raw = str.replace(/\s/g,''); // supprime tous les espaces
-  const mapping = { "0-1.99":0, "2.00-2.49":2, "2.50-2.99":2.5, "3.00-3.49":3, "3.50-4.00":4 };
+  if (!str) return null;
+  const raw = str.replace(/\s/g, ''); // supprime tous les espaces
+  const mapping = { "0-1.99": 0, "2.00-2.49": 2, "2.50-2.99": 2.5, "3.00-3.49": 3, "3.50-4.00": 4 };
   return mapping[raw] ?? null;
 }
 
@@ -19,45 +19,73 @@ function updateChart() {
     d3.mean(filtered, d => d.panic)
   ];
 
-  const width = document.getElementById("chart").clientWidth;
-  const height = document.getElementById("chart").clientHeight;
-  let radius = Math.min(width, height)/2 - 50;
+  let width = document.getElementById("chart").clientWidth;
+  let height = document.getElementById("chart").clientHeight;
+  width = Math.max(width, 500);
+  height = Math.max(height, 500);
+  let radius = Math.min(width, height) / 2 - 50;
   radius = Math.max(radius, 100);
-  const angleSlice = (2*Math.PI)/radarAxes.length;
+  const angleSlice = (2 * Math.PI) / radarAxes.length;
 
   const svg = d3.select("#chart").append("svg")
     .attr("width", width).attr("height", height)
-    .append("g").attr("transform", `translate(${width/2},${height/2})`);
+    .append("g").attr("transform", `translate(${width / 2},${height / 2})`);
 
-  const rScale = d3.scaleLinear().domain([0,1]).range([0,radius]);
+  const rScale = d3.scaleLinear().domain([0, 1]).range([0, radius]);
 
   // Grid
-  for(let level=1; level<=5; level++){
-    svg.append("circle").attr("r", radius/5*level).attr("fill","none").attr("stroke","#CDCDCD").attr("stroke-dasharray","2,2");
+  for (let level = 10; level >= 1; level--) {
+    const r = (radius / 10) * level;
+
+    // Cercle
+    svg.append("circle")
+      .attr("r", r)
+      .attr("fill", "none")
+      .attr("stroke", "#CDCDCD")
+      .attr("stroke-dasharray", "2,2");
+
+    // Label de pourcentage
+    svg.append("text")
+      .attr("x", 5)          // petit décalage à droite
+      .attr("y", -r)         // placé en haut du cercle
+      .attr("dy", "-0.3em")  // ajustement vertical
+      .style("font-size", "10px")
+      .style("fill", "#666")
+      .text(`${level * 10}%`);
   }
 
   // Axes
-  radarAxes.forEach((axis,i)=>{
-    const angle = i*angleSlice - Math.PI/2;
-    const x = rScale(1)*Math.cos(angle);
-    const y = rScale(1)*Math.sin(angle);
-    svg.append("line").attr("x1",0).attr("y1",0).attr("x2",x).attr("y2",y).attr("stroke","#888");
-    svg.append("text").attr("x",x*1.1).attr("y",y*1.1).attr("text-anchor","middle").attr("alignment-baseline","middle").text(axis);
+  radarAxes.forEach((axis, i) => {
+    const angle = i * angleSlice - Math.PI / 2;
+    const x = rScale(1) * Math.cos(angle);
+    const y = rScale(1) * Math.sin(angle);
+    svg.append("line").attr("x1", 0).attr("y1", 0).attr("x2", x).attr("y2", y).attr("stroke", "#888");
+    svg.append("text").attr("x", x * 1.1).attr("y", y * 1.1).attr("text-anchor", "middle").attr("alignment-baseline", "middle").text(axis);
   });
 
   // Polygon
-  const line = d3.lineRadial().radius(d=>rScale(d)).angle((d,i)=>i*angleSlice).curve(d3.curveLinearClosed);
-  svg.append("path").datum(averages).attr("d",line).attr("fill","rgba(0,123,255,0.3)").attr("stroke","#007bff").attr("stroke-width",2);
+  const line = d3.lineRadial().radius(d => rScale(d)).angle((d, i) => i * angleSlice).curve(d3.curveLinearClosed);
+  svg.append("path").datum(averages).attr("d", line).attr("fill", "rgba(0,123,255,0.3)").attr("stroke", "#007bff").attr("stroke-width", 2);
 
   // Points + tooltip
-  const tooltip = d3.select("body").append("div").attr("class","tooltip");
-  svg.selectAll(".point").data(averages).enter().append("circle")
-    .attr("cx",(d,i)=>rScale(d)*Math.cos(i*angleSlice - Math.PI/2))
-    .attr("cy",(d,i)=>rScale(d)*Math.sin(i*angleSlice - Math.PI/2))
-    .attr("r",5).attr("fill","#007bff")
-    .on("mouseover", (event,d,i)=>{ tooltip.style("opacity",1).html(`${radarAxes[i]}: ${d.toFixed(2)}`); })
-    .on("mousemove", event=>{ tooltip.style("left",(event.pageX+10)+"px").style("top",(event.pageY-10)+"px"); })
-    .on("mouseout", ()=>{ tooltip.style("opacity",0); });
+  const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+  svg.selectAll(".point")
+    .data(averages.map((d, i) => ({ value: d, axis: radarAxes[i] })))
+    .enter().append("circle")
+    .attr("cx", (d, i) => rScale(d.value) * Math.cos(i * angleSlice - Math.PI / 2))
+    .attr("cy", (d, i) => rScale(d.value) * Math.sin(i * angleSlice - Math.PI / 2))
+    .attr("r", 5)
+    .attr("fill", "#007bff")
+    .on("mouseover", (event, d) => {
+      tooltip.style("opacity", 1).html(`${d.axis}: ${(d.value * 100).toFixed(1)}%`);
+    })
+    .on("mousemove", event => {
+      tooltip.style("left", (event.pageX + 10) + "px").style("top", (event.pageY - 10) + "px");
+    })
+    .on("mouseout", () => {
+      tooltip.style("opacity", 0);
+    });
+
 }
 
 // Radar chart axes
@@ -86,22 +114,20 @@ d3.csv("http://localhost:8000/TP1/dataset/Student_Mental_health.csv").then(data 
 });
 
 // Initialize dual-handle sliders
-function initSliders(){
+function initSliders() {
   // Age slider
   noUiSlider.create(document.getElementById('ageSlider'), {
     start: [18, 24],
     connect: true,
     step: 1,
     range: { min: 18, max: 24 },
-    tooltips: [true,true],
+    tooltips: [true, true],
     format: { to: v => parseInt(v), from: v => parseInt(v) }
   });
 
   const ageSlider = document.getElementById('ageSlider').noUiSlider;
 
-  ageSlider.on('update', function(values){
-    document.getElementById('ageMinVal').textContent = values[0];
-    document.getElementById('ageMaxVal').textContent = values[1];
+  ageSlider.on('update', function (values) {
     updateChart();
   });
 
@@ -111,16 +137,13 @@ function initSliders(){
     connect: true,
     step: 0.5,
     range: { min: 0, max: 4 },
-    tooltips: [true,true],
-    pips: { mode: 'values', values: [0,2,2.5,3,4], density: 100 },
+    tooltips: [true, true],
     format: { to: v => parseFloat(v), from: v => parseFloat(v) }
   });
 
   const cgpaSlider = document.getElementById('cgpaSlider').noUiSlider;
 
-  cgpaSlider.on('update', function(values){
-    document.getElementById('cgpaMinVal').textContent = values[0];
-    document.getElementById('cgpaMaxVal').textContent = values[1];
+  cgpaSlider.on('update', function (values) {
     updateChart();
   });
 
@@ -137,8 +160,8 @@ function getFilters() {
   const ageSliderEl = document.getElementById('ageSlider');
   const cgpaSliderEl = document.getElementById('cgpaSlider');
 
-  const ageSlider = ageSliderEl?.noUiSlider?.get().map(Number) ?? [18,24];
-  const cgpaSlider = cgpaSliderEl?.noUiSlider?.get().map(Number) ?? [0,4];
+  const ageSlider = ageSliderEl?.noUiSlider?.get().map(Number) ?? [18, 24];
+  const cgpaSlider = cgpaSliderEl?.noUiSlider?.get().map(Number) ?? [0, 4];
 
   return {
     genders, years, marital,
@@ -151,7 +174,7 @@ function getFilters() {
 function filterData() {
   const f = getFilters();
   return dataGlobal.filter(d => {
-    if(d.age === null || d.cgpa === null) return false;
+    if (d.age === null || d.cgpa === null) return false;
     const genderMatch = f.genders.length ? f.genders.includes(d.gender) : true;
     const yearMatch = f.years.length ? f.years.includes(d.year) : true;
     const maritalMatch = f.marital.length ? f.marital.includes(d.marital) : true;

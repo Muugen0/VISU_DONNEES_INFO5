@@ -1,41 +1,170 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Visualisation Santé Mentale</title>
-  <script src="https://d3js.org/d3.v6.js"></script>
-  <link rel="stylesheet", href="bubble.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
-</head>
-<body>
-  <div class="radio-toolbar">
-  <div class="titreradio">
-    Genre
-  </div>
-  <div id="d0">
-    <input type="radio" id="r0" name="genre" value="0">
-    <label for="r0">Homme</label>
-  </div>
-	<div id="d1">
-    <input type="radio" id="r1" name="genre" value="1">
-    <label for="r1">Femme</label>
-  </div>
-	<div id="d2">
-    <input type="radio" id="r2" name="genre" value="2">
-    <label for="r2">Non-Binaire</label>
-  </div>
-	<div id="d3">
-    <input type="radio" id="r3" name="genre" value="3">
-    <label for="r3">Ne préfère pas dire</label>
-  </div>
-	<div id="d4">
-    <input type="radio" id="r4" name="genre" value="4" checked>
-    <label for="r4">Superposer tous les graphiques</label>
-  </div>
-</div>
-<div id="bubble_plot"></div>
-<script src="bubble.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Visualisation Santé Mentale</title>
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <link rel="stylesheet", href="bubble.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+  </head>
+  <body>
+    <div class="radio-toolbar">
+      <div class="titreradio">
+        Genre
+      </div>
+      <div id="d0">
+        <input type="radio" id="r0" name="genre" value="0">
+        <label for="r0">Homme</label>
+      </div>
+      <div id="d1">
+        <input type="radio" id="r1" name="genre" value="1">
+        <label for="r1">Femme</label>
+      </div>
+      <div id="d2">
+        <input type="radio" id="r2" name="genre" value="2">
+        <label for="r2">Non-Binaire</label>
+      </div>
+      <div id="d3">
+        <input type="radio" id="r3" name="genre" value="3">
+        <label for="r3">Ne préfère pas dire</label>
+      </div>
+      <div id="d4">
+        <input type="radio" id="r4" name="genre" value="4" checked>
+        <label for="r4">Superposer tous les graphiques</label>
+      </div>
+    </div>
+    <div id="bubble_plot">
+      <script src="bubble.js"></script>
+    </div>
+    <div>
+      <p>
+        Nous avons étudiés l'impact du stress, de l'anxieté et de la dépression sur la santée mantale chez les individus
+        en fonction de leur genre et de leur age.
+      </p>
+      <h2>Variables étudiées</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Variable</th>
+              <th>Type / Echelle de mesure</th>
+              <th>Variables visuelles présentes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Risque pour la santé mentale</td>
+              <td>Ordinale</td>
+              <td>Taille</td>
+            </tr>
+            <tr>
+              <td>Niveau de stress</td>
+              <td>Quantitative</td>
+              <td>Teinte</td>
+            </tr>
+            <tr>
+              <td>Niveau de dépression</td>
+              <td>Quantitative</td>
+              <td>Position</td>
+            </tr>
+            <tr>
+              <td>Niveau d'anxiété</td>
+              <td>Quantitative</td>
+              <td>Position</td>
+            </tr>
+          </tbody>
+      </table>
+      <p>
+        Les options à droite du grphique nous permettent de choisir le genre de la population affichée. Passer la souris sur 
+        les bulles nous donne aussi des informations sur la tranche d'age des personnes correspondantes à cette bulle.
+      </p>
 
-  
+
+      <table>
+          <thead>
+              <tr>
+                  <th colspan="3">Tableau de McKinley</th>
+              </tr>
+              <tr>
+                  <th colspan="1">Quantitative</th>
+                  <th colspan="1">Ordinale</th>
+                  <th colspan="1">Nominale</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td><span class="important">Position (Niveau d'anxiete et de depression)</span></td>
+                  <td>Position</td>
+                  <td>Position</td>
+              </tr>
+                  <td>Longueur</td>
+                  <td>Luminosité</td>
+                  <td>Teinte</td>
+              </tr>
+                  <td>Angle</td>
+                  <td>Saturation </td>
+                  <td>Texture</td>
+              </tr>
+                  <td>Aire </td>
+                  <td>Teinte </td>
+                  <td>Luminosité</td>
+              </tr>
+                  <td>Volume</td>
+                  <td>Texture</td>
+                  <td>Saturation</td>
+              </tr>
+                  <td>Luminosité</td>
+                  <td><span class="important">Longueur (Rique santé mentale)</span></td>
+                  <td>Forme</td>
+              </tr>
+                  <td>Saturation </td>
+                  <td>Angle</td>
+                  <td>Longueur</td>
+              </tr>
+                  <td><span class="important">Teinte (Niveau de stress)</span> </td>
+                  <td>Aire</td>
+                  <td>Angle</td>
+              </tr>
+                  <td>Texture</td>
+                  <td>Volume</td>
+                  <td>Aire</td>
+              </tr>
+                  <td>Forme</td>
+                  <td>Forme</td>
+                  <td>Volume</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <h2>Avantages</h2>
+      <ul>
+        <li>Les couleurs permettent rapidement de comparer le niveau de stress.</li>
+        <li>Les options permettent d'isoler les informations qui nous intéressent.</li>
+        <li>La position des bulles nous informe facilement du niveau d'axiété et de dépression.</li>
+        <li>La taille des bulles nous informe sur le risque pour la santé mentale en un coup d'oeil.</li>
+      </ul>
+
+
+      <h2>Limites</h2>
+      <ul>
+        <li>Ce genre de graphe devient très dur à lire quand il y à beaucoup de données donc nous avons du faire des moyennes.</li>
+        <li>Les données offertes par le positionnement des bulles ne sont pas très précises.</li>
+      </ul>
+
+
+      <h2>Analyse</h2>
+      <p>On remarque que quel que soit le genre, plus on est stressé et déprimé, plus on a de risques pour sa santé mentale.</p>
+      <p>
+        On remarque également que les hommes et les femmes sont en général similaires en terme de stress, déppréssion, 
+        anxiété et risque pour leur santé mentale. En revanche, les non-binaires et les personnes ne donnant pas leur genres
+        sont moins similaires les uns des autres.
+      </p>
+      <p>
+        Enfin, s'il on regarde attentivement avec la souris, on remarque que l'age d'une personne n'influence pas vraiment
+        son niveau de santé mentale.
+      </p>
+    </div>
+  </body>
+</html>
+
 

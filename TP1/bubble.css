@@ -98,3 +98,26 @@ div.titreradio{
     background-color:rgba(99, 99, 99, 0.2);
     border-color: 1px dashed black;
 }
+
+table
+{ margin: 10px 0 30px 0;}
+
+table tr, table tr td
+{ background: #203057;
+  color: #FFF;
+  padding: 7px 4px;
+  text-align: left;}
+  
+table tr td
+{ background: #E5E5DB;
+  color: #47433F;
+  border-top: 1px solid #FFF;}
+span.important{
+   color: purple; 
+   font-weight: bold;
+   }
+table th{
+  background: #203057;
+  color: #FFF;
+  padding: 7px 4px;
+  text-align: center;}

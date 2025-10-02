@@ -213,7 +213,7 @@ d3.csv("http://localhost:8000/TP1/dataset/MentalHealthDatasetMoyenne.csv").then(
       .data(allgroups)
       .join("circle")
         .attr("cx", width)
-        .attr("cy", (d,i) => 10 + i*(size+5)) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("cy", (d,i) => 20 + i*(size+5)) // 100 is where the first dot appears. 25 is the distance between dots
         .attr("r", 7)
         .style("fill", d =>  myColor(d))
         .on("mouseover", highlight)
@@ -225,7 +225,7 @@ d3.csv("http://localhost:8000/TP1/dataset/MentalHealthDatasetMoyenne.csv").then(
       .enter()
       .append("text")
         .attr("x", width + size*.8)
-        .attr("y", (d,i) =>  i * (size + 5) + (size/1.3)) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("y", (d,i) =>  10+ i * (size + 5) + (size/1.3)) // 100 is where the first dot appears. 25 is the distance between dots
         .style("fill", d => myColor(d))
         .text(d => d)
         .attr("text-anchor", "left")

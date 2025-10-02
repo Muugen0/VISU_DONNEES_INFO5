@@ -1,0 +1,19 @@
+.bubbles {
+    stroke-width: 1px;
+    stroke: black;
+    opacity: .8
+}
+
+.bubbles:hover {
+    stroke: black;
+}
+
+#bubble_plot {
+    margin: auto;
+    width: 90%;
+    min-height: 420;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+}

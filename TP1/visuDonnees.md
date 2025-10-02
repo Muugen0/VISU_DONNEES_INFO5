@@ -1,9 +1,10 @@
 # 1er graphique :
- - taille de la bubble : genre (4 genres possibles) (nominale)
- - couleur de la bubble : niveau risk santé mentale (3 niveaux possibles) (ordinale)
+ - taille de la bubble : niveau risk santé mentale (3 niveaux possibles) (ordinale)
+ - couleur de la bubble : stress level (1 -- 2 ; 3 -- 4; 5 -- 6; ..)
  - abscisse : dépression (quantitative)
  - ordonnée : anxiété (quantitative)
  - 1 bubble par tranche d'âge de 3 ans (quantitative)
+ - bouttons cliquables genre (4 genres possibles) (nominale)
  
 https://d3-graph-gallery.com/bubble
 
@@ -16,7 +17,7 @@ https://d3-graph-gallery.com/bubble
 une zone par employment status et une barre par donné quantitative dans chaque zone.
 
 
-https://www.kaggle.com/datasets/mahdimashayekhi/mental-health?resource=download
+https://www.kaggle.com/datasets/mahdimashayekhi/mental-health
 
 
 Reste à faire pour le radar chart :

@@ -1,81 +1,87 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-        <meta charset="UTF-8">
-        <title>Visualisation santé mentale des étudiants</title>
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-        <link rel="stylesheet" , href="main.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<title>Visualisation santé mentale des étudiants</title>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
+		<link rel="stylesheet" , href="main.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+	</head>
 
-<body>
-	<div style="position:sticky;">
-                <!-- En-tête -->
-                <header>
-                        <h1>Visualisation de la Santé Mentale</h1>
-                        <p>Analyse des données liées au bien-être, à l’anxiété et à la dépression</p>
-                </header>
+	<body>
+		<div style="position:sticky;">
+			<!-- En-tête -->
+			<header>
+				<h1>Pourcentage d'étudiants sujet à l'anxiété, aux dépressions et aux crises de panique</h1>
+			</header>
 
-                <!-- Menu -->
-                <nav>
-                        <button class="tablink active" data-target="tab1">
-                                <a href="http://localhost:8000/TP1/map_europe.html">Graphique 1</a>
-                        </button>
-                        <button class="tablink" data-target="tab2">Graphique 2</button>
-                        <button class="tablink" data-target="tab3">
-                                <a href="http://localhost:8000/TP1/student_health.html">Graphique 3</a>
-                        </button>
-                </nav>
-        </div>
-	<div style="padding: 30px;">
-<h2>Pourcentage d'étudiants sujet à l'anxiété, aux dépressions et aux crises de panique</h2>
-		<div style="display:flex;">
-			<div class="controls">
-
-				<div class="control-group">
-					<h3>Genre</h3>
-					<label><input type="checkbox" class="gender" value="male"> Homme</label>
-					<label><input type="checkbox" class="gender" value="female"> Femme</label>
-				</div>
-
-				<div class="control-group">
-					<h3>Année d'étude</h3>
-					<label><input type="checkbox" class="year" value="year 1"> Année 1</label>
-					<label><input type="checkbox" class="year" value="year 2"> Année 2</label>
-					<label><input type="checkbox" class="year" value="year 3"> Année 3</label>
-					<label><input type="checkbox" class="year" value="year 4"> Année 4</label>
-				</div>
-
-				<div class="control-group">
-					<h3>Etat civil</h3>
-					<label><input type="checkbox" class="marital" value="no"> Célibataire</label>
-					<label><input type="checkbox" class="marital" value="yes"> Marié</label>
-				</div>
-
-				<div class="control-group">
-					<h3>Âge</h3>
-					<div id="ageSlider" class="slider-container"></div>
-				</div>
-
-				<div class="control-group">
-					<h3>Score CGPA</h3>
-					<div id="cgpaSlider" class="slider-container"></div>
-				</div>
-
-			</div>
-
-			<div style="padding-left:25%">
-				<div id="chart"></div>
-				<div class="no-data" id="noDataMsg" style="display:none;">Aucune donnée disponible pour ces filtres.
-				</div>
-				<script src="radarChart.js"></script>
-			</div>
+			<!-- Menu -->
+			<nav>
+				<a href="http://localhost:8000/TP1/map_europe.html">
+					<button class="tablink" data-target="tab1">
+						Graphique 1
+					</button>
+				</a>
+				<a href="http://localhost:8000/TP1/idk.html">
+					<button class="tablink" data-target="tab2">
+						Graphique 2
+					</button>
+				</a>
+				<a href="http://localhost:8000/TP1/student_health.html">
+					<button class="tablink active" data-target="tab3">
+						Graphique 3
+					</button>
+				</a>
+			</nav>
 		</div>
+		<div style="padding: 30px;">
+			<div style="display:flex;">
+				<div class="controls">
 
-		<h2>Description du graphique</h2>
-		<p>
+					<div class="control-group">
+						<h3>Genre</h3>
+						<label><input type="checkbox" class="gender" value="male"> Homme</label>
+						<label><input type="checkbox" class="gender" value="female"> Femme</label>
+					</div>
+
+					<div class="control-group">
+						<h3>Année d'étude</h3>
+						<label><input type="checkbox" class="year" value="year 1"> Année 1</label>
+						<label><input type="checkbox" class="year" value="year 2"> Année 2</label>
+						<label><input type="checkbox" class="year" value="year 3"> Année 3</label>
+						<label><input type="checkbox" class="year" value="year 4"> Année 4</label>
+					</div>
+
+					<div class="control-group">
+						<h3>Etat civil</h3>
+						<label><input type="checkbox" class="marital" value="no"> Célibataire</label>
+						<label><input type="checkbox" class="marital" value="yes"> Marié</label>
+					</div>
+
+					<div class="control-group">
+						<h3>Âge</h3>
+						<div id="ageSlider" class="slider-container"></div>
+					</div>
+
+					<div class="control-group">
+						<h3>Score CGPA</h3>
+						<div id="cgpaSlider" class="slider-container"></div>
+					</div>
+
+				</div>
+
+				<div style="padding-left:25%">
+					<div id="chart"></div>
+					<div class="no-data" id="noDataMsg" style="display:none;">Aucune donnée disponible pour ces filtres.
+					</div>
+					<script src="radarChart.js"></script>
+				</div>
+			</div>
+
+			<h2>Description du graphique</h2>
+			<p>
 			Cet ensemble de données a été collecté par une enquête menée par Google Forms auprès d'étudiants
 			universitaires afin d'examiner leur situation académique actuelle et leur santé mentale. Toutes les données
 			sont basées sur la Malaisie et collectées auprès de l'Iium (Université islamique internationale de
@@ -84,17 +90,17 @@
 			de panique. Chaque axe correspond à l'une de ces dimensions, et la valeur indiquée est la moyenne calculée
 			sur l'échantillon filtré, comprise entre 0 et 1. Les filtres disponibles permettent de limiter l'analyse en
 			fonction du genre, de l'année d'étude, de l'état civil, de l'âge et du score CGPA.
-		</p>
+			</p>
 
-		<h2>Justification du choix de visualisation</h2>
-		<p>À l’origine, les données sont des réponses nominales (Oui/Non). Elles ont été converties en valeurs binaires
+			<h2>Justification du choix de visualisation</h2>
+			<p>À l’origine, les données sont des réponses nominales (Oui/Non). Elles ont été converties en valeurs binaires
 			(0/1) puis agrégées sous forme de moyennes, ce qui donne des proportions sous forme de pourcentages. Après cette
 			transformation, les données suivent donc une échelle quantitative de rapport. Dans ce contexte,
 			l’utilisation de la position comme variable visuelle dans un radar chart est la plus pertinente, car elle
 			illustre directement l’intensité des proportions sur chaque axe.
-		</p>
-	</div>
+			</p>
+		</div>
 
-	</div>
-</body>
+		</div>
+	</body>
 </html>

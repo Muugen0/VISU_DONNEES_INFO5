@@ -17,3 +17,84 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     padding: 20px;
 }
+
+div.radio-toolbar{
+	position: absolute;
+	top: 25%;
+	right: 2%;
+	width:	300px;
+	border: 0px solid black;
+	margin-left: 10px;
+}
+.radio-toolbar input[type="radio"] {
+	opacity: 0;
+	position: fixed;
+	width: 0;
+}
+.radio-toolbar label {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 10px;
+    font-family: sans-serif, Arial;
+    font-size: 12px;
+    border: 1px solid #444;
+    border-radius: 4px;
+	margin-left:50px;
+	margin-top:5px;
+	color:black;
+}
+.radio-toolbar input[type="radio"]:checked + label {
+    background-color:#bfb;
+    border-color: #4c4;
+}
+.radio-toolbar input[type="radio"]:focus + label {
+    border: 1px dashed #444;
+}
+
+
+
+div.radio-toolbar div#d0 label {
+    background-color:rgba(31, 119, 180, 0.5);
+    border-color: grey;
+}
+div.radio-toolbar div#d1 label {
+    background-color:rgba(255, 127, 14, 0.5);
+    border-color: grey;
+}
+div.radio-toolbar div#d2 label {
+    background-color:rgba(44, 160, 44, 0.5);
+    border-color: grey;
+}
+div.radio-toolbar div#d3 label {
+    background-color:rgba(214, 39, 40, 0.5);
+    border-color: grey;
+}
+div.radio-toolbar div#d4 label {
+    background-color:rgba(99, 99, 99, 0.5);
+    border-color: grey;
+}
+div.titreradio{
+	font-size:14px;
+	margin: 20px;
+	margin-left:50px;
+}
+.radio-toolbar input[type="radio"]#r0:focus + label {
+    background-color:rgba(31, 119, 180, 0.2);
+    border-color: 1px dashed black;
+}
+.radio-toolbar input[type="radio"]#r1:focus + label {
+    background-color:rgba(255, 127, 14, 0.2);
+    border-color: 1px dashed black;
+}
+.radio-toolbar input[type="radio"]#r2:focus + label {
+    background-color:rgba(44, 160, 44, 0.2);
+    border-color: 1px dashed black;
+}
+.radio-toolbar input[type="radio"]#r3:focus + label {
+    background-color:rgba(214, 39, 40, 0.2);
+    border-color: 1px dashed black;
+}
+.radio-toolbar input[type="radio"]#r4:focus + label {
+    background-color:rgba(99, 99, 99, 0.2);
+    border-color: 1px dashed black;
+}

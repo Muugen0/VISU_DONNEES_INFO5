@@ -28,5 +28,4 @@ Reste à faire pour le radar chart :
  - ajouter des commentaire sur l'étude (ce que montre) ce graphique
  - détailler et justifier les choix des variables utilisés pour représenter les données
 
-https://www.kaggle.com/datasets/mahdimashayekhi/mental-health?resource=download
 

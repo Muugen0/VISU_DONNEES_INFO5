@@ -1,0 +1,638 @@
+{
+    "name": "SI",
+    "type": "directory",
+    "children": [
+        {
+            "name": "TP6",
+            "type": "directory",
+            "children": [
+                {
+                    "name": "ROUBIA_Akram",
+                    "type": "directory",
+                    "children": [
+                        {
+                            "name": "ROUBIA_Akram_TP6.zip",
+                            "type": "file"
+                        },
+                        {
+                            "name": "TP4",
+                            "type": "directory",
+                            "children": [
+                                {
+                                    "name": ".DS_Store",
+                                    "type": "file"
+                                },
+                                {
+                                    "name": ".vscode",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "settings.json",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "build",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "CMakeCache.txt",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "CMakeFiles",
+                                            "type": "directory",
+                                            "children": [
+                                                {
+                                                    "name": "3.22.1",
+                                                    "type": "directory",
+                                                    "children": [
+                                                        {
+                                                            "name": "CMakeCCompiler.cmake",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "CMakeCXXCompiler.cmake",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "CMakeDetermineCompilerABI_C.bin",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "CMakeDetermineCompilerABI_CXX.bin",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "CMakeSystem.cmake",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "CompilerIdC",
+                                                            "type": "directory",
+                                                            "children": [
+                                                                {
+                                                                    "name": "a.out",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "CMakeCCompilerId.c",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "tmp",
+                                                                    "type": "directory",
+                                                                    "children": []
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "name": "CompilerIdCXX",
+                                                            "type": "directory",
+                                                            "children": [
+                                                                {
+                                                                    "name": "a.out",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "CMakeCXXCompilerId.cpp",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "tmp",
+                                                                    "type": "directory",
+                                                                    "children": []
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "cmake.check_cache",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "CMakeDirectoryInformation.cmake",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "CMakeOutput.log",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "CMakeTmp",
+                                                    "type": "directory",
+                                                    "children": []
+                                                },
+                                                {
+                                                    "name": "Makefile.cmake",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Makefile2",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "progress.marks",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "si_info4.dir",
+                                                    "type": "directory",
+                                                    "children": [
+                                                        {
+                                                            "name": "build.make",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "cmake_clean.cmake",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "compiler_depend.internal",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "compiler_depend.make",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "compiler_depend.ts",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "depend.make",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "DependInfo.cmake",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "flags.make",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "link.txt",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "progress.make",
+                                                            "type": "file"
+                                                        },
+                                                        {
+                                                            "name": "src",
+                                                            "type": "directory",
+                                                            "children": [
+                                                                {
+                                                                    "name": "main.cpp.o",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "main.cpp.o.d",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "Mesh.cpp.o",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "Mesh.cpp.o.d",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "shader.cpp.o",
+                                                                    "type": "file"
+                                                                },
+                                                                {
+                                                                    "name": "shader.cpp.o.d",
+                                                                    "type": "file"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "name": "TargetDirectories.txt",
+                                                    "type": "file"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "cmake_install.cmake",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "Makefile",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "si_info4",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "CMakeLists.txt",
+                                    "type": "file"
+                                },
+                                {
+                                    "name": "doc",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "composantePhong.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "monImage.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "Rendu",
+                                            "type": "directory",
+                                            "children": [
+                                                {
+                                                    "name": "TP4 Synth\u00e8se d\u2019images.pdf",
+                                                    "type": "file"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "schemaGeometrie.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "shadingTP4.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tp4.md",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tp4.pdf",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "models",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "armadillo.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "blob.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "blob2.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "buddha.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "bunny.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "ceasar.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "cube.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "dragon.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "max.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "sphere.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "square.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "text.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "text_2.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "triangle.off",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "triceratops.off",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "shader",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "fragment.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "fragment_lines.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "fragment_phong.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "vertex.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "vertex_lines.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "vertex_phong.glsl",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "src",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "main.cpp",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "Mesh.cpp",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "Mesh.h",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "shader.cpp",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "shader.h",
+                                            "type": "file"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "TP6",
+                            "type": "directory",
+                            "children": [
+                                {
+                                    "name": "CMakeLists.txt",
+                                    "type": "file"
+                                },
+                                {
+                                    "name": "doc",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "Rendu",
+                                            "type": "directory",
+                                            "children": [
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-34-47.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-35-08.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-37-28.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-37-48.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-40-10.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-40-24.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-50-19.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-51-01.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-51-12.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 08-59-46.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 09-00-21.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-27-36.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-27-57.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-30-50.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-31-18.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-31-45.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-32-03.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 11-32-09.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 12-10-40.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 12-11-25.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 12-12-37.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 12-12-53.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 12-13-06.png",
+                                                    "type": "file"
+                                                },
+                                                {
+                                                    "name": "Capture d\u2019\u00e9cran du 2025-03-19 12-13-36.png",
+                                                    "type": "file"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "teaserCourbeC0.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "teaserCourbeC1.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "teaserPolygone.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessCoord.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessDistanceControl.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessellation.svg",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessIsoline.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessQuad.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessTriangle.png",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tp6.md",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tubeParam.png",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "include",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "LisEtCompileLesShaders.h",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "main.h",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "shader",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "tessellation.eval.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessellation_01.vert.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessellation_02.cont.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessellation_03.eval.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessellation_04.geom.glsl",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "tessellation_05.frag.glsl",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "src",
+                                    "type": "directory",
+                                    "children": [
+                                        {
+                                            "name": "LisEtCompileLesShaders.cpp",
+                                            "type": "file"
+                                        },
+                                        {
+                                            "name": "main.cpp",
+                                            "type": "file"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "TP6 Synth\u00e8se d\u2019Images.pdf",
+                                    "type": "file"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "suitedutp6siplusdephotos",
+                    "type": "directory",
+                    "children": []
+                }
+            ]
+        }
+    ]
+}

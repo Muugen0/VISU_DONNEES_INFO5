@@ -1,9 +1,9 @@
 
 d3.json("./dataset/akram.json").then(data => {
-  const width = 1152;
-  const height = width;
-  const cx = width * 0.5; // adjust as needed to fit
-  const cy = height * 0.54; // adjust as needed to fit
+  const width = 900;
+  const height = 700;
+  const cx = width * 0.55; // adjust as needed to fit
+  const cy = height * 0.5; // adjust as needed to fit
   const radius = Math.min(width, height) / 2 - 80;
 
   // Create a radial cluster layout. The layout’s first dimension (x)
@@ -18,10 +18,10 @@ d3.json("./dataset/akram.json").then(data => {
 
   // Creates the SVG container.
   const svg = d3.create("svg")
-      .attr("width", width)
-      .attr("height", height)
+      .attr("width", 1000)
+      .attr("height", 1000)
       .attr("viewBox", [-cx, -cy, width, height])
-      .attr("style", "width: 100%; height: auto; font: 10px sans-serif;");
+      .attr("style", "width: 90%; height: 90%; font: 10px sans-serif;");
 
   // Append links.
   svg.append("g")

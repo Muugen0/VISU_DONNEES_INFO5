@@ -8,14 +8,78 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
-            display: flex;
             justify-content: center;
             align-items: center;
         }
+	header {
+    background: linear-gradient(135deg, #56cc9d, #3a8fb7);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background: #e6f4f1;
+    padding: 10px;
+    box-shadow: inset 0 -2px 5px rgba(0,0,0,0.05);
+}
+
+nav button {
+    background: #d1eeea;
+    color: #2b6a6c;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+}
+
+nav button:hover {
+    background: #b8e0dc;
+    transform: translateY(-2px);
+}
+
+nav button.active {
+    background: #3a8fb7;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
     </style>
 </head>
 <body>
+	<div style="position:sticky;">
+                <!-- En-tête -->
+                <header>
+                        <h1>Représentation de structures arborescentes</h1>
+                </header>
+
+                <!-- Menu -->
+                <nav>
+                        <a href="Radial_Dendrogram.html">
+                                        <button class="tablink active" data-target="tab1">
+                                                Radial Dendrogram
+                                        </button>
+                                </a>
+                                <a href="Tidy_Tree.html">
+                                        <button class="tablink" data-target="tab2">
+                                                Tidy Tree
+                                        </button>
+                                </a>
+                </nav>
+        </div>
+
     <script src = "./scripts/radial.js"></script> <!--Radial Dendrogram representation-->
 </body>
 </html>

@@ -1,6 +1,6 @@
 d3.json("./dataset/akram.json").then(data => {
 
-const width = 1152;
+const width = 2052;
 
   // Compute the tree height; this approach will allow the height of the
   // SVG to scale according to the breadth (width) of the tree layout.

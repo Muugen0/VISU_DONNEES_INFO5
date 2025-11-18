@@ -1,3 +1,5 @@
+import math
+
 def uneDecomposition(data):
     new_data = []
     coeff = []
@@ -39,7 +41,25 @@ def RecompositionRemoveSmallCoeff(data, coeff, seuil):
     print("Coeff after remove small values : ", new_coeff)
     return Recomposition(data, new_coeff)
 
+def Error1(data, seuil):
+    decomposition,coeff = Decomposition(data)
+    new_data = RecompositionRemoveSmallCoeff(decomposition, coeff, seuil)
+    sum = 0
+    for i in range(len(data)):
+    	sum += abs(data[i] - new_data[i])
+    return sum/len(data)
+    
+def Error2(data, seuil):
+    decomposition,coeff = Decomposition(data)
+    new_data = RecompositionRemoveSmallCoeff(decomposition, coeff, seuil)
+    sum = 0
+    for i in range(len(data)):
+    	sum += (data[i] - new_data[i])**2
+    return (math.sqrt(sum))/len(data)
+
+#-----------------------------------------------------------------
 data = [9.0,7.0,3.0,5.0,2.0,10.0,8.0,12.0]
+seuil = 1.0
 print("Initial data : ", data)
 data_decomposition,coeff = uneDecomposition(data)
 print("One decomposition: ", data_decomposition)
@@ -58,5 +78,8 @@ print("Initial data : ", data)
 data_decomposition,coeff = Decomposition(data)
 print("Total decomposition : ", data_decomposition)
 print("Coeff : ", coeff)
-data_recomposition = RecompositionRemoveSmallCoeff(data_decomposition, coeff, 1.0)
+data_recomposition = RecompositionRemoveSmallCoeff(data_decomposition, coeff, seuil)
 print("Total recomposition - remove small coeff : ", data_recomposition)
+print("---------------------------------------------------------")
+print("Error calcul with absolute value :", Error1(data, seuil))
+print("Error calcul with square root : ", Error2(data, seuil))

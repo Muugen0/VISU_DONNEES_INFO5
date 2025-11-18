@@ -22,25 +22,41 @@ def Decomposition(data):
         coeff.insert(0, new_coeff)
     return new_data,coeff
 
-def Recomposition(data, levels):
+def Recomposition(data, coeff):
     new_data = data
-    
-    for coeff in levels:
-        new_data = uneRecomposition(new_data, coeff)
-    
+    for current_coeff in coeff:
+        new_data = uneRecomposition(new_data, current_coeff)
     return new_data
 
+def RemoveSmallCoeff(coeff, seuil):
+    return [c if abs(c) > seuil else 0.0 for c in coeff]
+
+def GlobalRemoveSmallCoeff(coeff, seuil):
+    return [RemoveSmallCoeff(c,seuil) for c in coeff]
+
+def RecompositionRemoveSmallCoeff(data, coeff, seuil):
+    new_coeff = GlobalRemoveSmallCoeff(coeff, seuil)
+    print("Coeff after remove small values : ", new_coeff)
+    return Recomposition(data, new_coeff)
+
 data = [9.0,7.0,3.0,5.0,2.0,10.0,8.0,12.0]
-print("initial data : ", data)
+print("Initial data : ", data)
 data_decomposition,coeff = uneDecomposition(data)
-print("new data : ", data_decomposition)
-print("coeff : ", coeff)
+print("One decomposition: ", data_decomposition)
+print("Coeff : ", coeff)
 data_recomposition = uneRecomposition(data_decomposition, coeff)
-print("data recomposition : ", data_recomposition)
+print("One recomposition : ", data_recomposition)
 print("---------------------------------------------------------")
-print("initial data : ", data)
+print("Initial data : ", data)
 data_decomposition,coeff = Decomposition(data)
-print("new data : ", data_decomposition)
-print("coeff : ", coeff)
+print("Total decomposition : ", data_decomposition)
+print("Coeff : ", coeff)
 data_recomposition = Recomposition(data_decomposition, coeff)
-print("data recomposition ; ", data_recomposition)
+print("Total Recomposition : ", data_recomposition)
+print("---------------------------------------------------------")
+print("Initial data : ", data)
+data_decomposition,coeff = Decomposition(data)
+print("Total decomposition : ", data_decomposition)
+print("Coeff : ", coeff)
+data_recomposition = RecompositionRemoveSmallCoeff(data_decomposition, coeff, 1.0)
+print("Total recomposition - remove small coeff : ", data_recomposition)

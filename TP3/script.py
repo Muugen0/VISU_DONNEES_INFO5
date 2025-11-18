@@ -1,4 +1,9 @@
 import math
+import matplotlib.pyplot as plt
+import random
+
+def generate_data(max_value, length):
+    return [((random.random()*2)-1)*max_value for _ in range(length)]
 
 def uneDecomposition(data):
     new_data = []
@@ -57,8 +62,19 @@ def Error2(data, seuil):
     	sum += (data[i] - new_data[i])**2
     return (math.sqrt(sum))/len(data)
 
+def histo(coeff, seuil):
+    abs_coeff = [c for current_coeff in coeff for c in current_coeff]
+    plt.figure(figsize=(6,4))
+    plt.hist(abs_coeff, bins='auto', color='skyblue', edgecolor='black')
+    plt.title("title")
+    plt.xlabel("xlabel")
+    plt.ylabel("ylabel")
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.show()
+
 #-----------------------------------------------------------------
-data = [9.0,7.0,3.0,5.0,2.0,10.0,8.0,12.0]
+#data = [9.0,7.0,3.0,5.0,2.0,10.0,8.0,12.0]
+data = generate_data(20,256)
 seuil = 1.0
 print("Initial data : ", data)
 data_decomposition,coeff = uneDecomposition(data)
@@ -83,3 +99,4 @@ print("Total recomposition - remove small coeff : ", data_recomposition)
 print("---------------------------------------------------------")
 print("Error calcul with absolute value :", Error1(data, seuil))
 print("Error calcul with square root : ", Error2(data, seuil))
+histo(coeff, seuil)

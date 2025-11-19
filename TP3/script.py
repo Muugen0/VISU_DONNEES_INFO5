@@ -1,6 +1,7 @@
 import math
 import matplotlib.pyplot as plt
 import random
+import numpy as np
 
 def generate_data(max_value, length):
     return [((random.random()*2)-1)*max_value for _ in range(length)]
@@ -43,7 +44,6 @@ def GlobalRemoveSmallCoeff(coeff, seuil):
 
 def RecompositionRemoveSmallCoeff(data, coeff, seuil):
     new_coeff = GlobalRemoveSmallCoeff(coeff, seuil)
-    print("Coeff after remove small values : ", new_coeff)
     return Recomposition(data, new_coeff)
 
 def Error1(data, seuil):
@@ -62,7 +62,8 @@ def Error2(data, seuil):
     	sum += (data[i] - new_data[i])**2
     return (math.sqrt(sum))/len(data)
 
-def histo(coeff, seuil):
+def histo(data, seuil):
+    new_data,coeff = Decomposition(data)
     abs_coeff = [abs(c) for current_coeff in coeff for c in current_coeff]
     coeff_min = int(min(abs_coeff))
     coeff_max = int(max(abs_coeff))
@@ -74,10 +75,25 @@ def histo(coeff, seuil):
     plt.ylabel("nombre d'occurences")
     plt.axvline(x=seuil, linestyle='--', linewidth=2, color='red')
     plt.grid(True, linestyle='--', alpha=1)
+
+def graphError1(data):
+    new_data,coeff = Decomposition(data)
+    abs_coeff = [abs(c) for current_coeff in coeff for c in current_coeff]
+    seuil_max = max(abs_coeff)
+    step = seuil_max/100
+    res = []
+    for i in np.arange(0,seuil_max,step):
+    	res.append([i,Error1(data,i)])
+    x = [pair[0] for pair in res]
+    y = [pair[1] for pair in res]
+    plt.figure(figsize=(6,4))
+    plt.plot(x, y, marker='o', linestyle='-', color='blue', label='data')
+    plt.title("Erreur en fonction du seuil de mise à zéro des coefficients de détails")
+    plt.xlabel("seuil")
+    plt.ylabel("erreur")
     plt.show()
 
 #-----------------------------------------------------------------
-#data = [9.0,7.0,3.0,5.0,2.0,10.0,8.0,12.0]
 data = generate_data(20,256)
 seuil = float(input("Valeur seuil : "))
 print("Initial data : ", data)
@@ -103,4 +119,5 @@ print("Total recomposition - remove small coeff : ", data_recomposition)
 print("---------------------------------------------------------")
 print("Error calcul with absolute value :", Error1(data, seuil))
 print("Error calcul with square root : ", Error2(data, seuil))
-histo(coeff, seuil)
+histo(data, seuil)
+graphError1(data)

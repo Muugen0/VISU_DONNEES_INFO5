@@ -63,19 +63,23 @@ def Error2(data, seuil):
     return (math.sqrt(sum))/len(data)
 
 def histo(coeff, seuil):
-    abs_coeff = [c for current_coeff in coeff for c in current_coeff]
+    abs_coeff = [abs(c) for current_coeff in coeff for c in current_coeff]
+    coeff_min = int(min(abs_coeff))
+    coeff_max = int(max(abs_coeff))
+    bins = range(coeff_min, coeff_max + 2)
     plt.figure(figsize=(6,4))
-    plt.hist(abs_coeff, bins='auto', color='skyblue', edgecolor='black')
-    plt.title("title")
-    plt.xlabel("xlabel")
-    plt.ylabel("ylabel")
-    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.hist(abs_coeff, bins=bins, color='skyblue', edgecolor='black')
+    plt.title("Répartition des valeurs absolues des coefficients de détails")
+    plt.xlabel("coefficient de détail")
+    plt.ylabel("nombre d'occurences")
+    plt.axvline(x=seuil, linestyle='--', linewidth=2, color='red')
+    plt.grid(True, linestyle='--', alpha=1)
     plt.show()
 
 #-----------------------------------------------------------------
 #data = [9.0,7.0,3.0,5.0,2.0,10.0,8.0,12.0]
 data = generate_data(20,256)
-seuil = 1.0
+seuil = float(input("Valeur seuil : "))
 print("Initial data : ", data)
 data_decomposition,coeff = uneDecomposition(data)
 print("One decomposition: ", data_decomposition)

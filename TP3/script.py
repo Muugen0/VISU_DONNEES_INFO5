@@ -5,6 +5,14 @@ import numpy as np
 
 def generate_data(max_value, length):
     return [((random.random()*2)-1)*max_value for _ in range(length)]
+    
+def generate_data_lisse(max_value, length):
+    t = np.linspace(-np.pi, np.pi, length)
+    raw = np.sin(t) + 0.5*np.cos(2*t)
+    raw_min, raw_max = np.min(raw), np.max(raw)
+    norm = 2*(raw - raw_min) / (raw_max - raw_min) - 1
+    data = norm * max_value
+    return data
 
 def uneDecomposition(data):
     new_data = []
@@ -93,31 +101,77 @@ def graphError1(data):
     plt.ylabel("erreur")
     plt.show()
 
+def behavior(seuil):
+    # données irrégulières
+    max_value = 20
+    length = 256
+    x = np.linspace(-max_value, max_value, length)
+    
+    data1 = generate_data(max_value, length)
+    new_data1, coeff1 = Decomposition(data1)
+    new_data2 = RecompositionRemoveSmallCoeff(new_data1, coeff1, seuil)
+
+    plt.figure(figsize=(6,8))
+    plt.subplot(2,1,1)
+    plt.plot(x, data1, label="données originales")
+    plt.plot(x, new_data2, label="données reconstruites")
+    plt.title("Comportement sur des données irrégulières")
+    plt.legend()
+    plt.grid(True)
+
+    # données lisses
+    data2 = generate_data_lisse(max_value, length)
+    new_data3, coeff2 = Decomposition(data2)
+    new_data4 = RecompositionRemoveSmallCoeff(new_data3, coeff2, seuil)
+    
+    plt.subplot(2,1,2)
+    plt.plot(x,data2, label="données originales")
+    plt.plot(x, new_data4, label="données reconstruites")
+    plt.title("Comportement sur des données lisses")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
 #-----------------------------------------------------------------
-data = generate_data(20,256)
+max_value = int(input("Valeur max des données : "))
+length = int(input("Nombre de données : "))
+data = generate_data(max_value, length)
 seuil = float(input("Valeur seuil : "))
-print("Initial data : ", data)
+print("Initial data : ")
+print(data)
 data_decomposition,coeff = uneDecomposition(data)
-print("One decomposition: ", data_decomposition)
-print("Coeff : ", coeff)
+print("One decomposition: ")
+print(data_decomposition)
+print("Coeff : ")
+print(coeff)
 data_recomposition = uneRecomposition(data_decomposition, coeff)
-print("One recomposition : ", data_recomposition)
+print("One recomposition : ")
+print(data_recomposition)
 print("---------------------------------------------------------")
-print("Initial data : ", data)
+print("Initial data : ")
+print(data)
 data_decomposition,coeff = Decomposition(data)
-print("Total decomposition : ", data_decomposition)
-print("Coeff : ", coeff)
+print("Total decomposition : ")
+print(data_decomposition)
+print("Coeff : ")
+print(coeff)
 data_recomposition = Recomposition(data_decomposition, coeff)
-print("Total Recomposition : ", data_recomposition)
+print("Total Recomposition : ")
+print(data_recomposition)
 print("---------------------------------------------------------")
-print("Initial data : ", data)
+print("Initial data : ")
+print(data)
 data_decomposition,coeff = Decomposition(data)
-print("Total decomposition : ", data_decomposition)
-print("Coeff : ", coeff)
+print("Total decomposition : ")
+print(data_decomposition)
+print("Coeff : ")
+print(coeff)
 data_recomposition = RecompositionRemoveSmallCoeff(data_decomposition, coeff, seuil)
-print("Total recomposition - remove small coeff : ", data_recomposition)
+print("Total recomposition - remove small coeff : ")
+print(data_recomposition)
 print("---------------------------------------------------------")
 print("Error calcul with absolute value :", Error1(data, seuil))
 print("Error calcul with square root : ", Error2(data, seuil))
 histo(data, seuil)
 graphError1(data)
+behavior(seuil)

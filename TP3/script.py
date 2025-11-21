@@ -8,11 +8,16 @@ def generate_data(max_value, length):
     
 def generate_data_lisse(max_value, length):
     t = np.linspace(-np.pi, np.pi, length)
-    raw = np.sin(t) + 0.5*np.cos(2*t)
+    raw = (
+        np.sin(t)
+        + 0.5*np.cos(2*t)
+        + 0.3*np.sin(3*t + np.random.random()*2*np.pi)
+        + 0.2*np.cos(5*t + np.random.random()*2*np.pi)
+    )
     raw_min, raw_max = np.min(raw), np.max(raw)
-    norm = 2*(raw - raw_min) / (raw_max - raw_min) - 1
-    data = norm * max_value
-    return data
+    norm = 2*(raw - raw_min)/(raw_max - raw_min) - 1
+    return norm * max_value
+
 
 def uneDecomposition(data):
     new_data = []
@@ -83,22 +88,28 @@ def histo(data, seuil):
     plt.ylabel("nombre d'occurences")
     plt.axvline(x=seuil, linestyle='--', linewidth=2, color='red')
     plt.grid(True, linestyle='--', alpha=1)
+    plt.show()
 
-def graphError1(data):
+def graphError(data):
     new_data,coeff = Decomposition(data)
     abs_coeff = [abs(c) for current_coeff in coeff for c in current_coeff]
     seuil_max = max(abs_coeff)
     step = seuil_max/100
-    res = []
+    res1 = []
+    res2 = []
     for i in np.arange(0,seuil_max,step):
-    	res.append([i,Error1(data,i)])
-    x = [pair[0] for pair in res]
-    y = [pair[1] for pair in res]
+    	res1.append([i,Error1(data,i)])
+    	res2.append([i,Error2(data,i)])
+    x = [pair[0] for pair in res1]
+    y1 = [pair[1] for pair in res1]
+    y2 = [pair[1] for pair in res2]
     plt.figure(figsize=(6,4))
-    plt.plot(x, y, marker='o', linestyle='-', color='blue', label='data')
+    plt.plot(x, y1, marker='o', linestyle='-', color='blue', label='valeur absolue')
+    plt.plot(x, y2, marker='o', linestyle='-', color='red', label='racine carré')
     plt.title("Erreur en fonction du seuil de mise à zéro des coefficients de détails")
     plt.xlabel("seuil")
     plt.ylabel("erreur")
+    plt.legend()
     plt.show()
 
 def behavior(max_value, length, seuil):
@@ -171,5 +182,5 @@ print("---------------------------------------------------------")
 print("Error calcul with absolute value :", Error1(data, seuil))
 print("Error calcul with square root : ", Error2(data, seuil))
 histo(data, seuil)
-graphError1(data)
+graphError(data)
 behavior(max_value, length, seuil)

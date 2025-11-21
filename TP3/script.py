@@ -101,11 +101,9 @@ def graphError1(data):
     plt.ylabel("erreur")
     plt.show()
 
-def behavior(seuil):
+def behavior(max_value, length, seuil):
     # données irrégulières
-    max_value = 20
-    length = 256
-    x = np.linspace(-max_value, max_value, length)
+    x = np.arange(length)
     
     data1 = generate_data(max_value, length)
     new_data1, coeff1 = Decomposition(data1)
@@ -174,4 +172,4 @@ print("Error calcul with absolute value :", Error1(data, seuil))
 print("Error calcul with square root : ", Error2(data, seuil))
 histo(data, seuil)
 graphError1(data)
-behavior(seuil)
+behavior(max_value, length, seuil)

@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 from matplotlib.patches import Polygon
 import numpy as np
+import random
 
 def uneDecomposition(data):
     new_data = []
@@ -148,14 +149,30 @@ def graphError(data):
     plt.legend()
     plt.show()
 
-#filename = str(input("Nom du fichier : "))
+def MoveSmallCoeff(coeff, seuil):
+    coeff_x = [elem[0] for elem in coeff]
+    coeff_y = [elem[1] for elem in coeff]
+    new_coeff = []
+    new_coeff_x = [c if abs(c) > seuil else c+random.uniform(-0.25,0.25) for c in coeff_x]
+    new_coeff_y = [c if abs(c) > seuil else c+random.uniform(-0.25,0.25) for c in coeff_y]
+    for i in range(len(coeff)):
+        new_coeff.append([new_coeff_x[i], new_coeff_y[i]])
+    return np.array(new_coeff)
 
-b = np.loadtxt('sh512.d')
+
+
+filename = str(input("Nom du fichier : "))
+
+seuil = float(input("Valeur du seuil : "))
+
+b = np.loadtxt(filename)
 
 b_decompose,coeff = DecompositionChaikin(b)
-b_recompose = RecompositionChaikin(b_decompose, coeff)
+new_coeff = MoveSmallCoeff(coeff, seuil)
+b_recompose = RecompositionChaikinSansPetitsCoeff(b_decompose, coeff, seuil)
+b_recompose_moveSmallCoeff = RecompositionChaikin(b_decompose, new_coeff)
 
-fig, (ax, ax1) = plt.subplots(1, 2, figsize=(12, 6))
+fig, (ax, ax1, ax2) = plt.subplots(1, 3, figsize=(12, 6))
 
 ax.add_patch(Polygon(b[0:len(b), :], fill=False, closed=True))
 ax.set_title("Polygone original")
@@ -163,9 +180,14 @@ ax.set_xlim(0, 12)
 ax.set_ylim(0, 12)
 
 ax1.add_patch(Polygon(b_recompose[0:len(b_recompose), :], fill=False, closed=True))
-ax1.set_title("Polygone reconstruit")
+ax1.set_title("Polygone reconstruit après mise à zéros des petits coefficiens")
 ax1.set_xlim(0, 12)
 ax1.set_ylim(0, 12)
+
+ax2.add_patch(Polygon(b_recompose_moveSmallCoeff[0:len(b_recompose_moveSmallCoeff), :], fill=False, closed=True))
+ax2.set_title("Polygone reconstruit après déplacements de sommets")
+ax2.set_xlim(0, 12)
+ax2.set_ylim(0, 12)
 
 plt.show()
 

@@ -98,6 +98,55 @@ def RecompositionChaikin(data, coeff):
         new_data.append(0.75*(data_np[i] + coeff_np[i]) + 0.25*(data_np[(i+1)%len(data)] - coeff_np[(i+1)%len(data)]))
         new_data.append(0.25*(data_np[i] + coeff_np[i]) + 0.75*(data_np[(i+1)%len(data)] - coeff_np[(i+1)%len(data)]))
     return np.array(new_data)
+    
+def Compression(coeff, seuil):
+    coeff_x = [elem[0] for elem in coeff]
+    coeff_y = [elem[1] for elem in coeff]
+    new_coeff = []
+    new_coeff_x = [c if abs(c) > seuil else 0.0 for c in coeff_x]
+    new_coeff_y = [c if abs(c) > seuil else 0.0 for c in coeff_y]
+    for i in range(len(coeff)):
+        new_coeff.append([new_coeff_x[i], new_coeff_y[i]])
+    return np.array(new_coeff)
+
+def RecompositionChaikinSansPetitsCoeff(data, coeff, seuil):
+    new_coeff = Compression(coeff, seuil)
+    return RecompositionChaikin(data, new_coeff)
+
+def Error1(data, seuil):
+    decomposition,coeff = DecompositionChaikin(data)
+    new_data = RecompositionChaikinSansPetitsCoeff(decomposition, coeff, seuil)
+    return np.mean(np.abs(data - new_data))
+    
+def Error2(data, seuil):
+    decomposition,coeff = DecompositionChaikin(data)
+    new_data = RecompositionChaikinSansPetitsCoeff(decomposition, coeff, seuil)
+    return np.sqrt(np.mean((data - new_data) ** 2))
+    
+def graphError(data):
+    new_data,coeff = DecompositionChaikin(data)
+    coeff_x = [elem[0] for elem in coeff]
+    coeff_y = [elem[1] for elem in coeff]
+    abs_coeff_x = [abs(c) for c in coeff_x]
+    abs_coeff_y = [abs(c) for c in coeff_y]
+    seuil_max = max(max(abs_coeff_x), max(abs_coeff_y))
+    step = seuil_max/100
+    res1 = []
+    res2 = []
+    for i in np.arange(0,seuil_max,step):
+    	res1.append([i,Error1(data,i)])
+    	res2.append([i,Error2(data,i)])
+    x = [pair[0] for pair in res1]
+    y1 = [pair[1] for pair in res1]
+    y2 = [pair[1] for pair in res2]
+    plt.figure(figsize=(6,4))
+    plt.plot(x, y1, marker='o', linestyle='-', color='blue', label='valeur absolue')
+    plt.plot(x, y2, marker='o', linestyle='-', color='red', label='racine carré')
+    plt.title("Erreur en fonction du seuil de mise à zéro des coefficients de détails")
+    plt.xlabel("seuil")
+    plt.ylabel("erreur")
+    plt.legend()
+    plt.show()
 
 #filename = str(input("Nom du fichier : "))
 
@@ -119,3 +168,5 @@ ax1.set_xlim(0, 12)
 ax1.set_ylim(0, 12)
 
 plt.show()
+
+graphError(b)

@@ -112,7 +112,7 @@ def test(filename, seuil, move):
 	ax.set_ylim(-1, 12)
 
 	ax2.add_patch(Polygon(b_recompose_withoutSmallCoeff[0:len(b_recompose_withoutSmallCoeff), :], fill=False, closed=True))
-	ax2.set_title("Polygone reconstruit après mise à zéro des petits coefficiens")
+	ax2.set_title("Polygone reconstruit avec seuil de " + str(seuil))
 	ax2.set_xlim(-1, 14)
 	ax2.set_ylim(-1, 12)
 
@@ -123,7 +123,7 @@ def test(filename, seuil, move):
 	ax.set_ylim(-1, 12)
 
 	ax3.add_patch(Polygon(b_recompose_moveSmallCoeff[0:len(b_recompose_moveSmallCoeff), :], fill=False, closed=True))
-	ax3.set_title("Polygone reconstruit après déplacements de sommets")
+	ax3.set_title("Polygone reconstruit après déplacements de sommets de " + str(move) + " avec seuil de : " + str(seuil))
 	ax3.set_xlim(-1, 14)
 	ax3.set_ylim(-1, 12)
 
@@ -131,7 +131,7 @@ def test(filename, seuil, move):
 	plt.show()
 
 filenames = ["sh512.d", "crocodile512.d", "herisson512.d"]
-seuil = float(input("Valeur du seuil : "))
-move = float(input("Valeur déplacement sommets : "))
+seuil = abs(float(input("Valeur du seuil : ")))
+move = abs(float(input("Valeur déplacement sommets : ")))
 for filename in filenames:
 	test(filename, seuil, move)

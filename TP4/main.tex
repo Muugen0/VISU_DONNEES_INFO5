@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{geometry}
+\usepackage[french]{babel}
+\geometry{hmargin=2cm,vmargin=1.5cm}
+\usepackage{color}
+
+\title{Compte Rendu : TP4 Multirésolution de Chaikin}
+\author{Arthur Millet}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Seahorse}
+\includegraphics[width=\linewidth]{S.png}
+\subsection*{Variation du seuil}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{S_S_0.png} &  \includegraphics[width=0.45\linewidth]{S_S_0.1.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{S_S_0.5.png} &  \includegraphics[width=0.45\linewidth]{S_S_1.png}\\
+\end{tabular}
+
+\subsection*{Variation du seuil en fonction du déplacement}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{S_0.01_0.1.png} &  \includegraphics[width=0.45\linewidth]{S_0.02_0.1.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{S_0.04_0.1.png} &  \includegraphics[width=0.45\linewidth]{S_0.08_0.1.png}\\
+\end{tabular}
+
+\subsection*{Variation du déplacement en fonction du seuil}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{S_0.1_0.2.png} &  \includegraphics[width=0.45\linewidth]{S_0.1_0.4.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{S_0.1_0.8.png} &  \includegraphics[width=0.45\linewidth]{S_0.1_1.6.png}\\
+\end{tabular}
+
+\subsection*{Évolution de l'erreur en fonction du seuil}
+\includegraphics[width=\linewidth]{S_Err.png}
+
+\section*{Crocodile}
+\includegraphics[width=\linewidth]{C.png}
+\subsection*{Variation du seuil}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{C_S_0.png} &  \includegraphics[width=0.45\linewidth]{C_S_0.1.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{C_S_0.5.png} &  \includegraphics[width=0.45\linewidth]{C_S_1.png}\\
+\end{tabular}
+
+\subsection*{Variation du seuil en fonction du déplacement}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{C_0.01_0.1.png} &  \includegraphics[width=0.45\linewidth]{C_0.02_0.1.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{C_0.04_0.1.png} &  \includegraphics[width=0.45\linewidth]{C_0.08_0.1.png}\\
+\end{tabular}
+
+\subsection*{Variation du déplacement en fonction du seuil}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{C_0.1_0.2.png} &  \includegraphics[width=0.45\linewidth]{C_0.1_0.4.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{C_0.1_0.8.png} &  \includegraphics[width=0.45\linewidth]{C_0.1_1.6.png}\\
+\end{tabular}
+
+\subsection*{Évolution de l'erreur en fonction du seuil}
+\includegraphics[width=\linewidth]{C_Err.png}
+
+\section*{Herisson}
+\includegraphics[width=\linewidth]{H.png}
+\subsection*{Variation du seuil}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{H_S_0.png} &  \includegraphics[width=0.45\linewidth]{H_S_0.1.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{H_S_0.5.png} &  \includegraphics[width=0.45\linewidth]{H_S_1.png}\\
+\end{tabular}
+
+\subsection*{Variation du seuil en fonction du déplacement}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{H_0.01_0.1.png} &  \includegraphics[width=0.45\linewidth]{H_0.02_0.1.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{H_0.04_0.1.png} &  \includegraphics[width=0.45\linewidth]{H_0.08_0.1.png}\\
+\end{tabular}
+
+\subsection*{Variation du déplacement en fonction du seuil}
+
+\begin{tabular}{cc}
+    \includegraphics[width=0.45\linewidth]{H_0.1_0.2.png} &  \includegraphics[width=0.45\linewidth]{H_0.1_0.4.png}\\
+    & \\
+    \includegraphics[width=0.45\linewidth]{H_0.1_0.8.png} &  \includegraphics[width=0.45\linewidth]{H_0.1_1.6.png}\\
+\end{tabular}
+
+\subsection*{Évolution de l'erreur en fonction du seuil}
+\includegraphics[width=\linewidth]{H_Err.png}
+
+\section*{Conclusion}
+
+Les données reconstruites après une décomposition totale de Chaikin sont identiques aux données d'origine.
+
+C'est également le cas quand on met à zéro les paramètres \textbf{seuil} et \textbf{déplacement}.
+\\
+
+Le \textbf{seuil} et \textbf{déplacement} doivent être positifs.
+
+Le seuil correspond permet de mettre à 0 les coefficients de détails se situant dans l'intervalle $[-seuil ; seuil]$.
+\\
+Le déplacement permet de déplacer certaines coordonnées si elle se situent dans l'intervalle $[-seuil ; seuil]$. Pour chaque coordonnée se situant dans cette intervalle, on la déplace d'un facteur aléatoire entre $[-deplacement; deplacement]$.
+\\
+
+De manière générale, dès que le seuil augmente, on remarque que les données reconstruites s'éloignent de plus en plus des données originales, car on met à zéro de plus en plus de coefficients de détails, donc la reconstruction est nettement moins précise, jusqu'à ne plus reconnaître la figure de départ.
+\\
+
+Il en est de même pour le déplacement avec un seuil fixé, plus le déplacement est important, moins lisse sera la figure recomposée car le déplacement est de plus en plus important pour les points en dessous du seuil.
+\\
+À l'inverse, si on fixe le déplacement et qu'on augmente le seuil, la figure obtenue après recomposition sera moins lisse, car on déplace de plus en plus de points.
+\\
+
+Concernant les graphiques décrivant l'évolution de l'erreur en fonction de la valeur du seuil, on obtient pour les fichier \textbf{sh512.d} et \textbf{crocodile512.d} une augmentation de l'erreur (par palier) et pour un seuil compris sur un petit intervalle, l'erreur diminue avant de ré-augmenter par la suite.
+\\
+Pour le fichier \textbf{herisson512.d}, on a presque le même motif, c'est juste que la diminution de l'erreur se fait pour des grandes valeurs du seuil, donc l'erreur ne ré-augmente pas pour la suite.
+\\
+La diminution de l'erreur sur l'intervalle, signifie peut-être que la suppression des nouveaux coefficients de détails corrige partiellement les erreurs précédentes.
+\\
+
+\includegraphics[width=\linewidth]{H_S_5.5.png}
+\includegraphics[width=\linewidth]{H_S_6.png}
+
+Avec un seuil de 5.5, l'erreur est plus élevé qu'avec un seuil de 6 pour le fichier \textbf{herisson512.d}.
+Visuellement on ne voit pas trop de différence au moment de la reconstruction, on arrive seulement à visualiser que la droite est légèrement décalé.
+\\
+En effet, on trouve ces coordonnées pour les 2 recompositions:
+
+seuil = 5.5 : [[-0.27 ; 5.27] , [11.92 ; 5.27]]
+
+seuil = 6 :  [[0.17 ; 5.27] , [10.11 ; 5.27]]
+\\
+Avec un seuil de 5.5, l’erreur est plus élevée (racine carrée : ~2.42 ; valeur absolue : ~2.07) que pour un seuil de 6, où l’erreur diminue (racine carrée : ~2.03 ; valeur absolue : ~1.73).
+
+\end{document}

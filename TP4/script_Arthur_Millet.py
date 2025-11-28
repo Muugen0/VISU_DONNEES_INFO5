@@ -3,86 +3,7 @@ from matplotlib.patches import Polygon
 import numpy as np
 import random
 
-def uneDecomposition(data):
-    new_data = []
-    coeff = []
-    for i in range(0, len(data)-1, 2):
-        moyenne = (data[i]+data[i+1])/2
-        new_data.append(moyenne)
-        coeff.append(data[i]-moyenne)
-    return new_data,coeff
-
-def uneRecomposition(data, coeff):
-    new_data = []
-    for i in range(len(data)):
-        new_data.append(data[i] + coeff[i])
-        new_data.append(data[i] - coeff[i])
-    return new_data
-
-def Decomposition(data):
-    new_data = data
-    coeff = []
-    while len(new_data) > 1:
-        new_data,new_coeff = uneDecomposition(new_data)
-        coeff.insert(0, new_coeff)
-    return new_data,coeff
-
-def Recomposition(data, coeff):
-    new_data = data
-    for current_coeff in coeff:
-        new_data = uneRecomposition(new_data, current_coeff)
-    return new_data
-
-def uneDecompositionDouble(data):
-    data_x = [elem[0] for elem in data]
-    data_y = [elem[1] for elem in data]
-    new_data_x, coeff_x = uneDecomposition(data_x)
-    new_data_y, coeff_y = uneDecomposition(data_y)
-    new_data = []
-    coeff = []
-    for i in range(len(new_data_x)):
-        new_data.append([new_data_x[i],new_data_y[i]])
-    for j in range(len(coeff_x)):
-        coeff.append([coeff_x[j],coeff_y[j]])
-    return new_data, coeff
-    
-def uneRecompositionDouble(data, coeff):
-    data_x = [elem[0] for elem in data]
-    data_y = [elem[1] for elem in data]
-    coeff_x = [elem[0] for elem in coeff]
-    coeff_y = [elem[1] for elem in coeff]
-    new_data_x = uneRecomposition(data_x, coeff_x)
-    new_data_y = uneRecomposition(data_y, coeff_y)
-    for i in range(len(new_data_x)):
-        new_data.append([new_data_x[i],new_data_y[i]])
-    return new_data
-
-def DecompositionDouble(data):
-    data_x = [elem[0] for elem in data]
-    data_y = [elem[1] for elem in data]
-    new_data_x, coeff_x = Decomposition(data_x)
-    new_data_y, coeff_y = Decomposition(data_y)
-    new_data = []
-    coeff = []
-    for i in range(len(new_data_x)):
-        new_data.append([new_data_x[i],new_data_y[i]])
-    for j in range(len(coeff_x)):
-        coeff.append([coeff_x[j],coeff_y[j]])
-    return new_data, coeff
-    
-def RecompositionDouble(data, coeff):
-    data_x = [elem[0] for elem in data]
-    data_y = [elem[1] for elem in data]
-    coeff_x = [elem[0] for elem in coeff]
-    coeff_y = [elem[1] for elem in coeff]
-    new_data_x = Recomposition(data_x, coeff_x)
-    new_data_y = Recomposition(data_y, coeff_y)
-    new_data = []
-    for i in range(len(new_data_x)):
-        new_data.append([new_data_x[i],new_data_y[i]])
-    return new_data
-
-def DecompositionChaikin(data):
+def uneDecompositionChaikin(data):
     data_np = np.array(data)
     new_data = []
     coeff = []
@@ -91,7 +12,7 @@ def DecompositionChaikin(data):
         coeff.append(0.25*(data_np[i-2] - 3*data_np[i-1] + 3*data_np[i] - data_np[i+1]))
     return np.array(new_data), np.array(coeff)
 
-def RecompositionChaikin(data, coeff):
+def uneRecompositionChaikin(data, coeff):
     data_np = np.array(data)
     coeff_np = np.array(coeff)
     new_data = []
@@ -100,15 +21,26 @@ def RecompositionChaikin(data, coeff):
         new_data.append(0.25*(data_np[i] + coeff_np[i]) + 0.75*(data_np[(i+1)%len(data)] - coeff_np[(i+1)%len(data)]))
     return np.array(new_data)
     
+def DecompositionChaikin(data):
+    new_data = data
+    coeff = []
+    while len(new_data) > 1:
+        new_data,new_coeff = uneDecompositionChaikin(new_data)
+        coeff.insert(0, new_coeff)
+    return np.array(new_data), coeff
+    
+def RecompositionChaikin(data, coeff):
+    new_data = data
+    for current_coeff in coeff:
+        new_data = uneRecompositionChaikin(new_data, current_coeff)
+    return np.array(new_data)
+    
 def Compression(coeff, seuil):
-    coeff_x = [elem[0] for elem in coeff]
-    coeff_y = [elem[1] for elem in coeff]
     new_coeff = []
-    new_coeff_x = [c if abs(c) > seuil else 0.0 for c in coeff_x]
-    new_coeff_y = [c if abs(c) > seuil else 0.0 for c in coeff_y]
-    for i in range(len(coeff)):
-        new_coeff.append([new_coeff_x[i], new_coeff_y[i]])
-    return np.array(new_coeff)
+    for c in coeff:
+        removeSmall = np.abs(c) <= seuil
+        new_coeff.append(np.where(removeSmall, 0.0, c))
+    return new_coeff
 
 def RecompositionChaikinSansPetitsCoeff(data, coeff, seuil):
     new_coeff = Compression(coeff, seuil)
@@ -126,11 +58,8 @@ def Error2(data, seuil):
     
 def graphError(data):
     new_data,coeff = DecompositionChaikin(data)
-    coeff_x = [elem[0] for elem in coeff]
-    coeff_y = [elem[1] for elem in coeff]
-    abs_coeff_x = [abs(c) for c in coeff_x]
-    abs_coeff_y = [abs(c) for c in coeff_y]
-    seuil_max = max(max(abs_coeff_x), max(abs_coeff_y))
+    all_coeff = np.vstack(coeff)
+    seuil_max = np.max(np.abs(all_coeff))
     step = seuil_max/100
     res1 = []
     res2 = []
@@ -147,48 +76,62 @@ def graphError(data):
     plt.xlabel("seuil")
     plt.ylabel("erreur")
     plt.legend()
-    plt.show()
+    
 
-def MoveSmallCoeff(coeff, seuil):
-    coeff_x = [elem[0] for elem in coeff]
-    coeff_y = [elem[1] for elem in coeff]
+def MoveSmallCoeff(coeff, seuil, move):
     new_coeff = []
-    new_coeff_x = [c if abs(c) > seuil else c+random.uniform(-0.25,0.25) for c in coeff_x]
-    new_coeff_y = [c if abs(c) > seuil else c+random.uniform(-0.25,0.25) for c in coeff_y]
-    for i in range(len(coeff)):
-        new_coeff.append([new_coeff_x[i], new_coeff_y[i]])
-    return np.array(new_coeff)
+    for c in coeff:
+        rand = np.random.uniform(-move, move, size=c.shape)
+        new_coeff.append(np.where(np.abs(c) > seuil, c, c + rand))
+    return new_coeff
 
+def test(filename, seuil, move):
+	b = np.loadtxt(filename)
 
+	b_decompose,coeff = DecompositionChaikin(b)
+	b_recompose = RecompositionChaikin(b_decompose, coeff)
+	b_recompose_withoutSmallCoeff = RecompositionChaikinSansPetitsCoeff(b_decompose, coeff, seuil)
+	new_coeff = MoveSmallCoeff(coeff, seuil, move)
+	b_recompose_moveSmallCoeff = RecompositionChaikin(b_decompose, new_coeff)
 
-filename = str(input("Nom du fichier : "))
+	fig1, (ax, ax1) = plt.subplots(1, 2, figsize=(12, 6))
+	ax.add_patch(Polygon(b[0:len(b), :], fill=False, closed=True))
+	ax.set_title("Polygone original")
+	ax.set_xlim(-1, 14)
+	ax.set_ylim(-1, 12)
 
+	ax1.add_patch(Polygon(b_recompose[0:len(b_recompose), :], fill=False, closed=True))
+	ax1.set_title("Polygone reconstruit après décomposition")
+	ax1.set_xlim(-1, 14)
+	ax1.set_ylim(-1, 12)
+
+	fig2, (ax, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+	ax.add_patch(Polygon(b[0:len(b), :], fill=False, closed=True))
+	ax.set_title("Polygone original")
+	ax.set_xlim(-1, 14)
+	ax.set_ylim(-1, 12)
+
+	ax2.add_patch(Polygon(b_recompose_withoutSmallCoeff[0:len(b_recompose_withoutSmallCoeff), :], fill=False, closed=True))
+	ax2.set_title("Polygone reconstruit après mise à zéro des petits coefficiens")
+	ax2.set_xlim(-1, 14)
+	ax2.set_ylim(-1, 12)
+
+	fig3, (ax, ax3) = plt.subplots(1, 2, figsize=(12, 6))
+	ax.add_patch(Polygon(b[0:len(b), :], fill=False, closed=True))
+	ax.set_title("Polygone original")
+	ax.set_xlim(-1, 14)
+	ax.set_ylim(-1, 12)
+
+	ax3.add_patch(Polygon(b_recompose_moveSmallCoeff[0:len(b_recompose_moveSmallCoeff), :], fill=False, closed=True))
+	ax3.set_title("Polygone reconstruit après déplacements de sommets")
+	ax3.set_xlim(-1, 14)
+	ax3.set_ylim(-1, 12)
+
+	graphError(b)
+	plt.show()
+
+filenames = ["sh512.d", "crocodile512.d", "herisson512.d"]
 seuil = float(input("Valeur du seuil : "))
-
-b = np.loadtxt(filename)
-
-b_decompose,coeff = DecompositionChaikin(b)
-new_coeff = MoveSmallCoeff(coeff, seuil)
-b_recompose = RecompositionChaikinSansPetitsCoeff(b_decompose, coeff, seuil)
-b_recompose_moveSmallCoeff = RecompositionChaikin(b_decompose, new_coeff)
-
-fig, (ax, ax1, ax2) = plt.subplots(1, 3, figsize=(12, 6))
-
-ax.add_patch(Polygon(b[0:len(b), :], fill=False, closed=True))
-ax.set_title("Polygone original")
-ax.set_xlim(0, 12)
-ax.set_ylim(0, 12)
-
-ax1.add_patch(Polygon(b_recompose[0:len(b_recompose), :], fill=False, closed=True))
-ax1.set_title("Polygone reconstruit après mise à zéros des petits coefficiens")
-ax1.set_xlim(0, 12)
-ax1.set_ylim(0, 12)
-
-ax2.add_patch(Polygon(b_recompose_moveSmallCoeff[0:len(b_recompose_moveSmallCoeff), :], fill=False, closed=True))
-ax2.set_title("Polygone reconstruit après déplacements de sommets")
-ax2.set_xlim(0, 12)
-ax2.set_ylim(0, 12)
-
-plt.show()
-
-graphError(b)
+move = float(input("Valeur déplacement sommets : "))
+for filename in filenames:
+	test(filename, seuil, move)

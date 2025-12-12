@@ -7,9 +7,21 @@ paraview.compatibility.minor = 0
 
 #### minimal conditions (Fichier longitude et latitude en arguments. ficher ".nc", longitude et latitude == float, tt les autres argv == float) 
 
+def usageprint() :
+	print("usage : <chemin vers le fichier> <longitude> <latitude> <t1> <t2> ... <tn>")
+	print("en sachant que :")
+	print("le fichier doit être de type '.nc'")
+	print("longitude et latitude doivent être des nombres")
+	print("t1, t2, ..., tn sont les valeurs de températures pour les courbes iso-valeurs et doivent être des nombres")
+	exit()
+
+
 ShowIsolines = False
 if (len(sys.argv) >= 5) :
 	ShowIsolines = True
+	
+if ((len(sys.argv) < 4) or (sys.argv[1].split("/")[-1].split(".")[-1] != "nc") or ()) :
+	usageprint()
 
 
 #### import the simple module from the paraview
@@ -22,8 +34,22 @@ paraview.simple._DisableFirstRenderCameraReset()
 # ----------------------------------------------------------------
 
 fileName = sys.argv[1]
-longitude = float(sys.argv[2])
-latitude = float(sys.argv[3])
+
+try:
+	longitude = float(sys.argv[2])
+except ValueError:
+	usageprint()
+
+try:
+	latitude = float(sys.argv[3])
+except ValueError:
+	usageprint()
+
+try:
+	for i in sys.argv[4:] :
+		float(i) 
+except ValueError:
+	usageprint()
 
 # get the material library
 materialLibrary1 = GetMaterialLibrary()
@@ -266,6 +292,8 @@ temperatureLUTColorBar.Set(
     Title='Temperature',
     ComponentTitle='',
 )
+temperatureLUTColorBar.LabelFormat = "%-2.1f"
+temperatureLUTColorBar.RangeLabelFormat = "%-2.1f"
 
 # set color bar visibility
 temperatureLUTColorBar.Visibility = 1
@@ -375,6 +403,10 @@ temperatureLUTColorBar2.Set(
     Title='Temperature',
     ComponentTitle='',
 )
+
+temperatureLUTColorBar2.LabelFormat = "%-2.1f"
+temperatureLUTColorBar2.RangeLabelFormat = "%-2.1f"
+
 
 # set color bar visibility
 temperatureLUTColorBar2.Visibility = 1

@@ -31,7 +31,7 @@ materialLibrary1 = GetMaterialLibrary()
 # Create the first 'Render View' (for the first window)
 renderView1 = CreateView('RenderView')
 renderView1.Set(
-    ViewSize=[961, 479],
+    ViewSize=[1920, 1080],
     InteractionMode='2D',
     CenterOfRotation=[2.0, 46.45000076293945, 0.0],
     CameraPosition=[2.0, 46.45000076293945, 64.20057971900172],
@@ -44,13 +44,13 @@ renderView1.Set(
 # Create the second 'Render View' (for the second window)
 renderView2 = CreateView('RenderView')
 renderView2.Set(
-    ViewSize=[961, 479],
+    ViewSize=[1920, 1080],
     InteractionMode='2D',
     CenterOfRotation=[2.0, 46.45000076293945, 0.0],
     CameraPosition=[2.0, 46.45000076293945, 64.20057971900172],
-    CameraFocalPoint=[2.0, 45.2815517, 5.8441357],
+    CameraFocalPoint=[2.0, longitude, latitude],
     CameraFocalDisk=1.0,
-    CameraParallelScale=16.616332737900287, # zoom
+    CameraParallelScale=8.950149718542106, # zoom
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -61,12 +61,12 @@ renderView2.Set(
 # Create first layout for the first window (layout1)
 layout1 = CreateLayout(name='Layout #1')
 layout1.AssignView(0, renderView1)
-layout1.SetSize(961, 479)
+#layout1.SetSize(961, 479)
 
 # Create second layout for the second window (layout2)
 layout2 = CreateLayout(name='Layout #2')
 layout2.AssignView(0, renderView2)
-layout2.SetSize(961, 479)
+#layout2.SetSize(961, 479)
 
 # ----------------------------------------------------------------
 # restore active view to the first render view
@@ -74,11 +74,23 @@ SetActiveView(renderView1)
 # ----------------------------------------------------------------
 
 # ----------------------------------------------------------------
+# setup the selections
+# ----------------------------------------------------------------
+
+# create a new 'Composite Data ID Selection Source'
+selection_sources11971 = CreateSelection(proxyname='CompositeDataIDSelectionSource', registrationname='selection_sources.11971', IDs=[1, 0, 0, 2, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 3, 6, 0, 6, 8, 0, 0, 9, 0, 0, 11, 0, 0, 13, 0, 1, 13, 0, 8, 13, 0, 27, 13, 0, 30, 13, 0, 60, 14, 0, 1, 15, 0, 0, 17, 0, 13, 17, 0, 14, 17, 0, 15, 17, 0, 16, 17, 0, 17, 18, 0, 0, 19, 0, 0, 20, 0, 1, 21, 0, 10, 21, 0, 12, 21, 0, 15, 21, 0, 19, 21, 0, 29, 21, 0, 30, 21, 0, 32, 21, 0, 55, 21, 0, 56, 21, 0, 87, 21, 0, 93, 21, 0, 94, 21, 0, 106, 21, 0, 128, 21, 0, 141, 21, 0, 151, 21, 0, 154, 22, 0, 0, 23, 0, 0, 24, 0, 0, 25, 0, 0, 26, 0, 0, 27, 0, 0, 28, 0, 7, 28, 0, 20, 28, 0, 53, 28, 0, 84, 28, 0, 86, 28, 0, 91, 28, 0, 99, 28, 0, 109, 28, 0, 120, 28, 0, 121, 28, 0, 157, 28, 0, 169, 28, 0, 185, 28, 0, 186, 28, 0, 188, 28, 0, 189, 28, 0, 191, 29, 0, 2, 29, 0, 12, 29, 0, 26, 29, 0, 36, 29, 0, 53, 30, 0, 10, 30, 0, 13, 30, 0, 17, 31, 0, 0, 32, 0, 0, 33, 0, 0, 34, 0, 4, 34, 0, 5, 34, 0, 6, 35, 0, 1, 36, 0, 2, 36, 0, 24, 36, 0, 38, 36, 0, 42, 37, 0, 0, 38, 0, 0, 39, 0, 0, 40, 0, 2, 41, 0, 0, 42, 0, 0, 43, 0, 0, 44, 0, 0, 45, 0, 6, 46, 0, 0, 47, 0, 0, 48, 0, 0, 49, 0, 0, 50, 0, 0, 51, 0, 18, 51, 0, 24, 51, 0, 29, 51, 0, 44, 51, 0, 55, 51, 0, 59, 52, 0, 0, 53, 0, 0, 54, 0, 0, 55, 0, 2, 56, 0, 0, 56, 0, 1, 56, 0, 2, 57, 0, 2, 57, 0, 4, 57, 0, 7, 57, 0, 14, 57, 0, 21, 57, 0, 26, 57, 0, 81, 57, 0, 86, 57, 0, 89, 57, 0, 94, 58, 0, 0, 59, 0, 0, 60, 0, 1, 61, 0, 3, 62, 0, 0, 62, 0, 1, 63, 0, 0, 63, 0, 1, 64, 0, 0, 65, 0, 20, 66, 0, 0, 66, 0, 1, 66, 0, 2, 67, 0, 0, 67, 0, 1, 68, 0, 0, 69, 0, 0, 70, 0, 0, 71, 0, 0, 72, 0, 0, 72, 0, 2, 73, 0, 0, 74, 0, 0, 75, 0, 0, 77, 0, 0, 78, 0, 0, 79, 0, 0, 80, 0, 0, 81, 0, 8, 82, 0, 0, 83, 0, 0, 84, 0, 1, 84, 0, 11, 84, 0, 19, 84, 0, 21, 84, 0, 22, 84, 0, 32, 85, 0, 0, 85, 0, 1, 86, 0, 1, 86, 0, 3, 86, 0, 4, 87, 0, 0, 88, 0, 0, 89, 0, 0, 90, 0, 0, 91, 0, 0, 92, 0, 0, 93, 0, 0, 94, 0, 0, 95, 0, 0, 96, 0, 0])
+
+# create a new 'Append Selections'
+selection_filter12016 = CreateSelection(proxyname='AppendSelections', registrationname='selection_filter.12016', Input=selection_sources11971,
+    Expression='s0',
+    SelectionNames=['s0'])
+
+# ----------------------------------------------------------------
 # setup the data processing pipelines
 # ----------------------------------------------------------------
 
 # create a new 'NetCDF Reader'
-a12dec6hnc = NetCDFReader(registrationName='12dec6h.nc', FileName=['/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/ParaviewData/12dec/12dec6h.nc'])
+a12dec6hnc = NetCDFReader(registrationName='12dec6h.nc', FileName=fileName)
 a12dec6hnc.Set(
     Dimensions='(latitude, longitude)',
     SphericalCoordinates=0,
@@ -118,8 +130,8 @@ ventSubset.Set(
 ventThreshold = Threshold(registrationName='VentThreshold', Input=ventSubset)
 ventThreshold.Set(
     Scalars=['POINTS', 'VentVecteur'],
-    LowerThreshold=3.0,
-    UpperThreshold=11.704658914463328,
+    UpperThreshold=3.0,
+    ThresholdMethod='Above Upper Threshold',
 )
 
 # create a new 'Glyph'
@@ -152,15 +164,19 @@ if (ShowIsolines) :
 # create a new 'GDAL Vector Reader'
 departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
 
+# create a new 'Extract Selection'
+extractSelection1 = ExtractSelection(registrationName='ExtractSelection1', Input=departements20140306100mshp,
+    Selection=selection_filter12016)
+
 # ----------------------------------------------------------------
 # setup the visualization in the first render view
 # ----------------------------------------------------------------
 
-# show data from departements20140306100mshp
-departements20140306100mshpDisplay = Show(departements20140306100mshp, renderView1, 'GeometryRepresentation')
+# show data from extractSelection1
+extractSelection1Display = Show(extractSelection1, renderView1, 'UnstructuredGridRepresentation')
 
 # trace defaults for the display properties.
-departements20140306100mshpDisplay.Set(
+extractSelection1Display.Set(
     Representation='Surface',
     AmbientColor=[0.0, 0.0, 0.0],
     ColorArrayName=['POINTS', ''],
@@ -225,12 +241,13 @@ if (ShowIsolines) :
 # show data from ventFleches
 ventFlechesDisplay = Show(ventFleches, renderView1, 'GeometryRepresentation')
 
+
 # trace defaults for the display properties.
 ventFlechesDisplay.Set(
     Representation='Surface',
-    AmbientColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
+    AmbientColor=[0.6, 0.6, 0.6],
     ColorArrayName=[None, ''],
-    DiffuseColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
+    DiffuseColor=[0.6, 0.6, 0.6],
     LineWidth=2.0,
 )
 
@@ -265,11 +282,11 @@ if (ShowIsolines) :
 # setup the visualization in the second render view
 # ----------------------------------------------------------------
 
-# show data from departements20140306100mshp
-departements20140306100mshpDisplay2 = Show(departements20140306100mshp, renderView2, 'GeometryRepresentation')
+# show data from extractSelection1
+extractSelection1Display2 = Show(extractSelection1, renderView2, 'UnstructuredGridRepresentation')
 
 # trace defaults for the display properties.
-departements20140306100mshpDisplay2.Set(
+extractSelection1Display2.Set(
     Representation='Surface',
     AmbientColor=[0.0, 0.0, 0.0],
     ColorArrayName=['POINTS', ''],
@@ -337,9 +354,9 @@ ventFlechesDisplay2 = Show(ventFleches, renderView2, 'GeometryRepresentation')
 # trace defaults for the display properties.
 ventFlechesDisplay2.Set(
     Representation='Surface',
-    AmbientColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
+    AmbientColor=[0.6, 0.6, 0.6],
     ColorArrayName=[None, ''],
-    DiffuseColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
+    DiffuseColor=[0.6, 0.6, 0.6],
     LineWidth=2.0,
 )
 
@@ -352,7 +369,7 @@ ventFlechesDisplay2.OpacityTransferFunction.Points = [5.01715033100156, 0.0, 0.5
 # setup the color legend parameters for each legend in this view
 
 # get color legend/bar for temperatureLUT in view renderView1
-temperatureLUTColorBar2 = GetScalarBar(temperatureLUT, renderView1)
+temperatureLUTColorBar2 = GetScalarBar(temperatureLUT, renderView2)
 temperatureLUTColorBar2.Set(
     WindowLocation='Upper Right Corner',
     Title='Temperature',
@@ -363,15 +380,17 @@ temperatureLUTColorBar2.Set(
 temperatureLUTColorBar2.Visibility = 1
 
 # show color legend
-tempratureSubdivisionDisplay2.SetScalarBarVisibility(renderView1, True)
+tempratureSubdivisionDisplay2.SetScalarBarVisibility(renderView2, True)
 
 if (ShowIsolines) :
 	# show color legend
-	temperatureIsolinesDisplay2.SetScalarBarVisibility(renderView1, True)
-
+	temperatureIsolinesDisplay2.SetScalarBarVisibility(renderView2, True)
+	
+# Fit all visible data in view 1
+renderView2.ResetCamera()
 
 # ----------------------------------------------------------------
-# setup color maps and opacity maps used in the visualization
+# setup color maps and opacity maps used 
 # note: the Get..() functions create a new object, if needed
 # ----------------------------------------------------------------
 
@@ -383,7 +402,7 @@ temperaturePWF.Set(
 )
 
 # ----------------------------------------------------------------
-# setup animation scene, tracks and keyframes
+# setup animation scene, tracks and keyframes for the first render view
 # note: the Get..() functions create a new object, if needed
 # ----------------------------------------------------------------
 
@@ -413,6 +432,36 @@ animationScene1.Set(
 # initialize the animation scene
 
 # ----------------------------------------------------------------
+# setup animation scene, tracks and keyframes for the second render view
+# note: the Get..() functions create a new object, if needed
+# ----------------------------------------------------------------
+
+# get the time-keeper
+timeKeeper2 = GetTimeKeeper()
+
+# initialize the timekeeper
+
+# get time animation track
+timeAnimationCue2 = GetTimeTrack()
+
+# initialize the animation track
+
+# get animation scene
+animationScene2 = GetAnimationScene()
+
+# initialize the animation scene
+animationScene2.Set(
+    ViewModules=renderView2,
+    Cues=timeAnimationCue2,
+    AnimationTime=1104027.0,
+    StartTime=1104027.0,
+    EndTime=1104033.0,
+    PlayMode='Snap To TimeSteps',
+)
+
+# initialize the animation scene
+
+# ----------------------------------------------------------------
 # restore active source
 SetActiveSource(a12dec6hnc)
 # ----------------------------------------------------------------
@@ -427,8 +476,9 @@ RenderAllViews()
 ## Interact with the view, usefull when running from pvpython
 Interact()
 #
-## Save a screenshot of the active view
-SaveScreenshot("testParaview.png")
+## Save a screenshot of both viex
+SaveScreenshot("testParaview1.png", view=renderView1)
+SaveScreenshot("testParaview2.png", view=renderView2)
 #
 ## Save a screenshot of a layout (multiple splitted view)
 # SaveScreenshot("path/to/screenshot.png", GetLayout())

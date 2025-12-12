@@ -20,11 +20,11 @@ renderView1 = CreateView('RenderView')
 renderView1.Set(
     ViewSize=[1418, 779],
     InteractionMode='2D',
-    CenterOfRotation=[2.0, 46.45000076293945, 0.0],
-    CameraPosition=[2.874043378456166, 46.471449152345905, 64.20057971900172],
-    CameraFocalPoint=[2.874043378456166, 46.471449152345905, 0.0],
+    CenterOfRotation=[2.0, 46.441402435302734, 0.0],
+    CameraPosition=[2.0, 46.441402435302734, 63.87260524857851],
+    CameraFocalPoint=[2.0, 46.441402435302734, 0.0],
     CameraFocalDisk=1.0,
-    CameraParallelScale=9.37948664364381,
+    CameraParallelScale=16.531446698647343,
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -48,9 +48,6 @@ SetActiveView(renderView1)
 # setup the data processing pipelines
 # ----------------------------------------------------------------
 
-# create a new 'GDAL Vector Reader'
-departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
-
 # create a new 'NetCDF Reader'
 a12dec6hnc = NetCDFReader(registrationName='12dec6h.nc', FileName=['/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/ParaviewData/12dec/12dec6h.nc'])
 a12dec6hnc.Set(
@@ -59,68 +56,71 @@ a12dec6hnc.Set(
 )
 
 # create a new 'Calculator'
-calculator3 = Calculator(registrationName='Calculator3', Input=a12dec6hnc)
-calculator3.Set(
+temperatureCalculator = Calculator(registrationName='TemperatureCalculator', Input=a12dec6hnc)
+temperatureCalculator.Set(
+    ResultArrayName='Temperature',
+    Function='t2m - 273.15',
+)
+
+# create a new 'Extract Subset'
+temperatureSubset = ExtractSubset(registrationName='TemperatureSubset', Input=temperatureCalculator)
+temperatureSubset.Set(
+    VOI=[0, 1120, 0, 716, 0, 0],
+    SampleRateI=10,
+    SampleRateJ=10,
+)
+
+# create a new 'Calculator'
+ventCalculator = Calculator(registrationName='VentCalculator', Input=a12dec6hnc)
+ventCalculator.Set(
     ResultArrayName='VentVecteur',
     Function='u10*iHat+v10*jHat',
 )
 
 # create a new 'Extract Subset'
-extractSubset3 = ExtractSubset(registrationName='ExtractSubset3', Input=calculator3)
-extractSubset3.Set(
+ventSubset = ExtractSubset(registrationName='VentSubset', Input=ventCalculator)
+ventSubset.Set(
     VOI=[0, 1120, 0, 716, 0, 0],
     SampleRateI=25,
     SampleRateJ=25,
 )
 
 # create a new 'Threshold'
-threshold1 = Threshold(registrationName='Threshold1', Input=extractSubset3)
-threshold1.Set(
+ventThreshold = Threshold(registrationName='VentThreshold', Input=ventSubset)
+ventThreshold.Set(
     Scalars=['POINTS', 'VentVecteur'],
     LowerThreshold=3.0,
     UpperThreshold=11.704658914463328,
 )
 
 # create a new 'Glyph'
-glyph1 = Glyph(registrationName='Glyph1', Input=threshold1,
+ventFleches = Glyph(registrationName='VentFleches', Input=ventThreshold,
     GlyphType='2D Glyph')
-glyph1.Set(
+ventFleches.Set(
     OrientationArray=['POINTS', 'VentVecteur'],
     ScaleArray=['POINTS', 'No scale array'],
     ScaleFactor=0.5,
 )
 
-# create a new 'Calculator'
-calculator1 = Calculator(registrationName='Calculator1', Input=a12dec6hnc)
-calculator1.Set(
-    ResultArrayName='Temperature',
-    Function='t2m - 273.15',
-)
-
-# create a new 'Extract Subset'
-extractSubset2 = ExtractSubset(registrationName='ExtractSubset2', Input=calculator1)
-extractSubset2.Set(
-    VOI=[0, 1120, 0, 716, 0, 0],
-    SampleRateI=10,
-    SampleRateJ=10,
-)
-
 # create a new 'Extract Surface'
-extractSurface1 = ExtractSurface(registrationName='ExtractSurface1', Input=extractSubset2)
+temparatureSurface = ExtractSurface(registrationName='TemparatureSurface', Input=temperatureSubset)
 
 # create a new 'Triangulate'
-triangulate1 = Triangulate(registrationName='Triangulate1', Input=extractSurface1)
+temperatureTriagulate = Triangulate(registrationName='TemperatureTriagulate', Input=temparatureSurface)
 
 # create a new 'Loop Subdivision'
-loopSubdivision1 = LoopSubdivision(registrationName='LoopSubdivision1', Input=triangulate1)
-loopSubdivision1.NumberofSubdivisions = 2
+tempratureSubdivision = LoopSubdivision(registrationName='TempratureSubdivision', Input=temperatureTriagulate)
+tempratureSubdivision.NumberofSubdivisions = 2
 
 # create a new 'Contour'
-contour1 = Contour(registrationName='Contour1', Input=loopSubdivision1)
-contour1.Set(
+temperatureIsolines = Contour(registrationName='TemperatureIsolines', Input=tempratureSubdivision)
+temperatureIsolines.Set(
     ContourBy=['POINTS', 'Temperature'],
     Isosurfaces=[0.0, 5.0, 10.0],
 )
+
+# create a new 'GDAL Vector Reader'
+departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
 
 # ----------------------------------------------------------------
 # setup the visualization in view 'renderView1'
@@ -139,8 +139,8 @@ departements20140306100mshpDisplay.Set(
     Assembly='Hierarchy',
 )
 
-# show data from loopSubdivision1
-loopSubdivision1Display = Show(loopSubdivision1, renderView1, 'GeometryRepresentation')
+# show data from tempratureSubdivision
+tempratureSubdivisionDisplay = Show(tempratureSubdivision, renderView1, 'GeometryRepresentation')
 
 # get color transfer function/color map for 'Temperature'
 temperatureLUT = GetColorTransferFunction('Temperature')
@@ -162,23 +162,23 @@ temperatureLUT.Set(
 )
 
 # trace defaults for the display properties.
-loopSubdivision1Display.Set(
+tempratureSubdivisionDisplay.Set(
     Representation='Surface',
     ColorArrayName=['POINTS', 'Temperature'],
     LookupTable=temperatureLUT,
 )
 
 # init the 'Piecewise Function' selected for 'ScaleTransferFunction'
-loopSubdivision1Display.ScaleTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
+tempratureSubdivisionDisplay.ScaleTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
 
 # init the 'Piecewise Function' selected for 'OpacityTransferFunction'
-loopSubdivision1Display.OpacityTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
+tempratureSubdivisionDisplay.OpacityTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
 
-# show data from contour1
-contour1Display = Show(contour1, renderView1, 'GeometryRepresentation')
+# show data from temperatureIsolines
+temperatureIsolinesDisplay = Show(temperatureIsolines, renderView1, 'GeometryRepresentation')
 
 # trace defaults for the display properties.
-contour1Display.Set(
+temperatureIsolinesDisplay.Set(
     Representation='Surface',
     ColorArrayName=['POINTS', 'Temperature'],
     LookupTable=temperatureLUT,
@@ -186,16 +186,16 @@ contour1Display.Set(
 )
 
 # init the 'Piecewise Function' selected for 'ScaleTransferFunction'
-contour1Display.ScaleTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
+temperatureIsolinesDisplay.ScaleTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
 
 # init the 'Piecewise Function' selected for 'OpacityTransferFunction'
-contour1Display.OpacityTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
+temperatureIsolinesDisplay.OpacityTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
 
-# show data from glyph1
-glyph1Display = Show(glyph1, renderView1, 'GeometryRepresentation')
+# show data from ventFleches
+ventFlechesDisplay = Show(ventFleches, renderView1, 'GeometryRepresentation')
 
 # trace defaults for the display properties.
-glyph1Display.Set(
+ventFlechesDisplay.Set(
     Representation='Surface',
     AmbientColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
     ColorArrayName=[None, ''],
@@ -204,10 +204,10 @@ glyph1Display.Set(
 )
 
 # init the 'Piecewise Function' selected for 'ScaleTransferFunction'
-glyph1Display.ScaleTransferFunction.Points = [5.01715033100156, 0.0, 0.5, 0.0, 9.782604853913682, 1.0, 0.5, 0.0]
+ventFlechesDisplay.ScaleTransferFunction.Points = [5.01715033100156, 0.0, 0.5, 0.0, 9.782604853913682, 1.0, 0.5, 0.0]
 
 # init the 'Piecewise Function' selected for 'OpacityTransferFunction'
-glyph1Display.OpacityTransferFunction.Points = [5.01715033100156, 0.0, 0.5, 0.0, 9.782604853913682, 1.0, 0.5, 0.0]
+ventFlechesDisplay.OpacityTransferFunction.Points = [5.01715033100156, 0.0, 0.5, 0.0, 9.782604853913682, 1.0, 0.5, 0.0]
 
 # setup the color legend parameters for each legend in this view
 
@@ -223,10 +223,10 @@ temperatureLUTColorBar.Set(
 temperatureLUTColorBar.Visibility = 1
 
 # show color legend
-loopSubdivision1Display.SetScalarBarVisibility(renderView1, True)
+tempratureSubdivisionDisplay.SetScalarBarVisibility(renderView1, True)
 
 # show color legend
-contour1Display.SetScalarBarVisibility(renderView1, True)
+temperatureIsolinesDisplay.SetScalarBarVisibility(renderView1, True)
 
 # ----------------------------------------------------------------
 # setup color maps and opacity maps used in the visualization
@@ -272,7 +272,7 @@ animationScene1.Set(
 
 # ----------------------------------------------------------------
 # restore active source
-SetActiveSource(departements20140306100mshp)
+SetActiveSource(a12dec6hnc)
 # ----------------------------------------------------------------
 
 

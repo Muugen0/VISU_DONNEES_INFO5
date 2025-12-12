@@ -1,7 +1,15 @@
 # state file generated using paraview version 6.0.1
 import paraview
+import sys
 paraview.compatibility.major = 6
 paraview.compatibility.minor = 0
+
+#### minimal conditions (Fichier longitude et latitude en arguments. ficher ".nc", longitude et latitude == float, tt les autres argv == float) 
+
+ShowIsolines = False
+if (len(sys.argv) >= 5) :
+	ShowIsolines = True
+
 
 #### import the simple module from the paraview
 from paraview.simple import *
@@ -11,6 +19,7 @@ paraview.simple._DisableFirstRenderCameraReset()
 # ----------------------------------------------------------------
 # setup views used in the visualization
 # ----------------------------------------------------------------
+
 
 # get the material library
 materialLibrary1 = GetMaterialLibrary()
@@ -112,12 +121,13 @@ temperatureTriagulate = Triangulate(registrationName='TemperatureTriagulate', In
 tempratureSubdivision = LoopSubdivision(registrationName='TempratureSubdivision', Input=temperatureTriagulate)
 tempratureSubdivision.NumberofSubdivisions = 2
 
-# create a new 'Contour'
-temperatureIsolines = Contour(registrationName='TemperatureIsolines', Input=tempratureSubdivision)
-temperatureIsolines.Set(
-    ContourBy=['POINTS', 'Temperature'],
-    Isosurfaces=[0.0, 5.0, 10.0],
-)
+if (ShowIsolines) :
+	# create a new 'Contour'
+	temperatureIsolines = Contour(registrationName='TemperatureIsolines', Input=tempratureSubdivision)
+	temperatureIsolines.Set(
+		ContourBy=['POINTS', 'Temperature'],
+		Isosurfaces=[float(i) for i in sys.argv[4:]],
+	)
 
 # create a new 'GDAL Vector Reader'
 departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
@@ -174,22 +184,23 @@ tempratureSubdivisionDisplay.ScaleTransferFunction.Points = [-16.690899077217523
 # init the 'Piecewise Function' selected for 'OpacityTransferFunction'
 tempratureSubdivisionDisplay.OpacityTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
 
-# show data from temperatureIsolines
-temperatureIsolinesDisplay = Show(temperatureIsolines, renderView1, 'GeometryRepresentation')
+if (ShowIsolines) :
+	# show data from temperatureIsolines
+	temperatureIsolinesDisplay = Show(temperatureIsolines, renderView1, 'GeometryRepresentation')
 
-# trace defaults for the display properties.
-temperatureIsolinesDisplay.Set(
-    Representation='Surface',
-    ColorArrayName=['POINTS', 'Temperature'],
-    LookupTable=temperatureLUT,
-    LineWidth=3.0,
-)
+	# trace defaults for the display properties.
+	temperatureIsolinesDisplay.Set(
+		Representation='Surface',
+		ColorArrayName=['POINTS', 'Temperature'],
+		LookupTable=temperatureLUT,
+		LineWidth=3.0,
+	)
 
-# init the 'Piecewise Function' selected for 'ScaleTransferFunction'
-temperatureIsolinesDisplay.ScaleTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
+	# init the 'Piecewise Function' selected for 'ScaleTransferFunction'
+	temperatureIsolinesDisplay.ScaleTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
 
-# init the 'Piecewise Function' selected for 'OpacityTransferFunction'
-temperatureIsolinesDisplay.OpacityTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
+	# init the 'Piecewise Function' selected for 'OpacityTransferFunction'
+	temperatureIsolinesDisplay.OpacityTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
 
 # show data from ventFleches
 ventFlechesDisplay = Show(ventFleches, renderView1, 'GeometryRepresentation')
@@ -225,8 +236,9 @@ temperatureLUTColorBar.Visibility = 1
 # show color legend
 tempratureSubdivisionDisplay.SetScalarBarVisibility(renderView1, True)
 
-# show color legend
-temperatureIsolinesDisplay.SetScalarBarVisibility(renderView1, True)
+if (ShowIsolines) :
+	# show color legend
+	temperatureIsolinesDisplay.SetScalarBarVisibility(renderView1, True)
 
 # ----------------------------------------------------------------
 # setup color maps and opacity maps used in the visualization
@@ -283,7 +295,7 @@ SetActiveSource(a12dec6hnc)
 # RenderAllViews()
 #
 ## Interact with the view, usefull when running from pvpython
-# Interact()
+Interact()
 #
 ## Save a screenshot of the active view
 # SaveScreenshot("path/to/screenshot.png")

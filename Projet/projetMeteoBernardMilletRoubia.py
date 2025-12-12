@@ -21,10 +21,10 @@ renderView1.Set(
     ViewSize=[1418, 779],
     InteractionMode='2D',
     CenterOfRotation=[2.0, 46.45000076293945, 0.0],
-    CameraPosition=[3.039810611739514, 46.37270127095975, 64.20057971900172],
-    CameraFocalPoint=[3.039810611739514, 46.37270127095975, 0.0],
+    CameraPosition=[2.874043378456166, 46.471449152345905, 64.20057971900172],
+    CameraFocalPoint=[2.874043378456166, 46.471449152345905, 0.0],
     CameraFocalDisk=1.0,
-    CameraParallelScale=11.349178838809015,
+    CameraParallelScale=9.37948664364381,
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -48,6 +48,9 @@ SetActiveView(renderView1)
 # setup the data processing pipelines
 # ----------------------------------------------------------------
 
+# create a new 'GDAL Vector Reader'
+departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
+
 # create a new 'NetCDF Reader'
 a12dec6hnc = NetCDFReader(registrationName='12dec6h.nc', FileName=['/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/ParaviewData/12dec/12dec6h.nc'])
 a12dec6hnc.Set(
@@ -55,8 +58,37 @@ a12dec6hnc.Set(
     SphericalCoordinates=0,
 )
 
-# create a new 'GDAL Vector Reader'
-departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
+# create a new 'Calculator'
+calculator3 = Calculator(registrationName='Calculator3', Input=a12dec6hnc)
+calculator3.Set(
+    ResultArrayName='VentVecteur',
+    Function='u10*iHat+v10*jHat',
+)
+
+# create a new 'Extract Subset'
+extractSubset3 = ExtractSubset(registrationName='ExtractSubset3', Input=calculator3)
+extractSubset3.Set(
+    VOI=[0, 1120, 0, 716, 0, 0],
+    SampleRateI=25,
+    SampleRateJ=25,
+)
+
+# create a new 'Threshold'
+threshold1 = Threshold(registrationName='Threshold1', Input=extractSubset3)
+threshold1.Set(
+    Scalars=['POINTS', 'VentVecteur'],
+    LowerThreshold=3.0,
+    UpperThreshold=11.704658914463328,
+)
+
+# create a new 'Glyph'
+glyph1 = Glyph(registrationName='Glyph1', Input=threshold1,
+    GlyphType='2D Glyph')
+glyph1.Set(
+    OrientationArray=['POINTS', 'VentVecteur'],
+    ScaleArray=['POINTS', 'No scale array'],
+    ScaleFactor=0.5,
+)
 
 # create a new 'Calculator'
 calculator1 = Calculator(registrationName='Calculator1', Input=a12dec6hnc)
@@ -65,11 +97,29 @@ calculator1.Set(
     Function='t2m - 273.15',
 )
 
-# create a new 'Calculator'
-calculator2 = Calculator(registrationName='Calculator2', Input=calculator1)
-calculator2.Set(
-    ResultArrayName='VentVecteur',
-    Function='u10*iHat+v10*jHat',
+# create a new 'Extract Subset'
+extractSubset2 = ExtractSubset(registrationName='ExtractSubset2', Input=calculator1)
+extractSubset2.Set(
+    VOI=[0, 1120, 0, 716, 0, 0],
+    SampleRateI=10,
+    SampleRateJ=10,
+)
+
+# create a new 'Extract Surface'
+extractSurface1 = ExtractSurface(registrationName='ExtractSurface1', Input=extractSubset2)
+
+# create a new 'Triangulate'
+triangulate1 = Triangulate(registrationName='Triangulate1', Input=extractSurface1)
+
+# create a new 'Loop Subdivision'
+loopSubdivision1 = LoopSubdivision(registrationName='LoopSubdivision1', Input=triangulate1)
+loopSubdivision1.NumberofSubdivisions = 2
+
+# create a new 'Contour'
+contour1 = Contour(registrationName='Contour1', Input=loopSubdivision1)
+contour1.Set(
+    ContourBy=['POINTS', 'Temperature'],
+    Isosurfaces=[0.0, 5.0, 10.0],
 )
 
 # ----------------------------------------------------------------
@@ -82,60 +132,111 @@ departements20140306100mshpDisplay = Show(departements20140306100mshp, renderVie
 # trace defaults for the display properties.
 departements20140306100mshpDisplay.Set(
     Representation='Surface',
+    AmbientColor=[0.0, 0.0, 0.0],
     ColorArrayName=['POINTS', ''],
+    DiffuseColor=[0.0, 0.0, 0.0],
+    LineWidth=1.5,
     Assembly='Hierarchy',
 )
 
-# show data from calculator2
-calculator2Display = Show(calculator2, renderView1, 'RectilinearGridRepresentation')
+# show data from loopSubdivision1
+loopSubdivision1Display = Show(loopSubdivision1, renderView1, 'GeometryRepresentation')
 
-# get color transfer function/color map for 'VentVecteur'
-ventVecteurLUT = GetColorTransferFunction('VentVecteur')
-ventVecteurLUT.Set(
-    RGBPoints=GenerateRGBPoints(
-        range_min=0.006810075996320468,
-        range_max=20.409033997143062,
-    ),
+# get color transfer function/color map for 'Temperature'
+temperatureLUT = GetColorTransferFunction('Temperature')
+temperatureLUT.Set(
+    RGBPoints=[
+        # scalar, red, green, blue
+        -16.690899077217523, 0.0564, 0.0564, 0.47,
+        -10.812571624600016, 0.243, 0.46035, 0.81,
+        -6.4653183994513554, 0.356814, 0.745025, 0.954368,
+        -1.8872033118429687, 0.6882, 0.93, 0.91791,
+        0.71268630027771, 0.899496, 0.944646, 0.768657,
+        3.4603028677646783, 0.957108, 0.833819, 0.508916,
+        7.499785953079805, 0.927521, 0.621439, 0.315357,
+        12.34719991304253, 0.8, 0.352, 0.16,
+        17.56668549908852, 0.59, 0.0767, 0.119475,
+    ],
+    NumberOfTableValues=12,
     ScalarRangeInitialized=1.0,
 )
 
 # trace defaults for the display properties.
-calculator2Display.Set(
+loopSubdivision1Display.Set(
     Representation='Surface',
-    ColorArrayName=['POINTS', 'VentVecteur'],
-    LookupTable=ventVecteurLUT,
+    ColorArrayName=['POINTS', 'Temperature'],
+    LookupTable=temperatureLUT,
 )
 
 # init the 'Piecewise Function' selected for 'ScaleTransferFunction'
-calculator2Display.ScaleTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.56668549908852, 1.0, 0.5, 0.0]
+loopSubdivision1Display.ScaleTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
 
 # init the 'Piecewise Function' selected for 'OpacityTransferFunction'
-calculator2Display.OpacityTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.56668549908852, 1.0, 0.5, 0.0]
+loopSubdivision1Display.OpacityTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
+
+# show data from contour1
+contour1Display = Show(contour1, renderView1, 'GeometryRepresentation')
+
+# trace defaults for the display properties.
+contour1Display.Set(
+    Representation='Surface',
+    ColorArrayName=['POINTS', 'Temperature'],
+    LookupTable=temperatureLUT,
+    LineWidth=3.0,
+)
+
+# init the 'Piecewise Function' selected for 'ScaleTransferFunction'
+contour1Display.ScaleTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
+
+# init the 'Piecewise Function' selected for 'OpacityTransferFunction'
+contour1Display.OpacityTransferFunction.Points = [0.27569767580568616, 0.0, 0.5, 0.0, 0.2757587134838104, 1.0, 0.5, 0.0]
+
+# show data from glyph1
+glyph1Display = Show(glyph1, renderView1, 'GeometryRepresentation')
+
+# trace defaults for the display properties.
+glyph1Display.Set(
+    Representation='Surface',
+    AmbientColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
+    ColorArrayName=[None, ''],
+    DiffuseColor=[0.7411764860153198, 0.7411764860153198, 0.7411764860153198],
+    LineWidth=2.0,
+)
+
+# init the 'Piecewise Function' selected for 'ScaleTransferFunction'
+glyph1Display.ScaleTransferFunction.Points = [5.01715033100156, 0.0, 0.5, 0.0, 9.782604853913682, 1.0, 0.5, 0.0]
+
+# init the 'Piecewise Function' selected for 'OpacityTransferFunction'
+glyph1Display.OpacityTransferFunction.Points = [5.01715033100156, 0.0, 0.5, 0.0, 9.782604853913682, 1.0, 0.5, 0.0]
 
 # setup the color legend parameters for each legend in this view
 
-# get color legend/bar for ventVecteurLUT in view renderView1
-ventVecteurLUTColorBar = GetScalarBar(ventVecteurLUT, renderView1)
-ventVecteurLUTColorBar.Set(
-    Title='VentVecteur',
-    ComponentTitle='Magnitude',
+# get color legend/bar for temperatureLUT in view renderView1
+temperatureLUTColorBar = GetScalarBar(temperatureLUT, renderView1)
+temperatureLUTColorBar.Set(
+    WindowLocation='Upper Right Corner',
+    Title='Temperature',
+    ComponentTitle='',
 )
 
 # set color bar visibility
-ventVecteurLUTColorBar.Visibility = 1
+temperatureLUTColorBar.Visibility = 1
 
 # show color legend
-calculator2Display.SetScalarBarVisibility(renderView1, True)
+loopSubdivision1Display.SetScalarBarVisibility(renderView1, True)
+
+# show color legend
+contour1Display.SetScalarBarVisibility(renderView1, True)
 
 # ----------------------------------------------------------------
 # setup color maps and opacity maps used in the visualization
 # note: the Get..() functions create a new object, if needed
 # ----------------------------------------------------------------
 
-# get opacity transfer function/opacity map for 'VentVecteur'
-ventVecteurPWF = GetOpacityTransferFunction('VentVecteur')
-ventVecteurPWF.Set(
-    Points=[0.006810075996320468, 0.0, 0.5, 0.0, 20.409033997143062, 1.0, 0.5, 0.0],
+# get opacity transfer function/opacity map for 'Temperature'
+temperaturePWF = GetOpacityTransferFunction('Temperature')
+temperaturePWF.Set(
+    Points=[-16.690899077217523, 0.0, 0.5, 0.0, 17.56668549908852, 1.0, 0.5, 0.0],
     ScalarRangeInitialized=1,
 )
 
@@ -144,15 +245,13 @@ ventVecteurPWF.Set(
 # note: the Get..() functions create a new object, if needed
 # ----------------------------------------------------------------
 
-# get time animation track
-timeAnimationCue1 = GetTimeTrack()
-
-# initialize the animation scene
-
 # get the time-keeper
 timeKeeper1 = GetTimeKeeper()
 
 # initialize the timekeeper
+
+# get time animation track
+timeAnimationCue1 = GetTimeTrack()
 
 # initialize the animation track
 
@@ -169,9 +268,11 @@ animationScene1.Set(
     PlayMode='Snap To TimeSteps',
 )
 
+# initialize the animation scene
+
 # ----------------------------------------------------------------
 # restore active source
-SetActiveSource(calculator2)
+SetActiveSource(departements20140306100mshp)
 # ----------------------------------------------------------------
 
 

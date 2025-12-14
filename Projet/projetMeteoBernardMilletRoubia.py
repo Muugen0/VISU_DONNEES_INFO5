@@ -2,6 +2,7 @@
 import paraview
 import sys
 import math
+import numpy as np
 paraview.compatibility.major = 6
 paraview.compatibility.minor = 0
 
@@ -129,6 +130,39 @@ temperatureCalculator.Set(
     Function='t2m - 273.15',
 )
 
+# Tri des seuils de température
+seuils_temperature = sorted([float(i) for i in sys.argv[4:]])
+
+# Nombre de couleurs à générer (N)
+N = len(seuils_temperature)
+rgb_points = []
+
+if(N > 0):
+    # Définir les couleurs de départ (par exemple bleu et rouge)
+    color_start = np.array([0.0, 0.0, 1.0])  # Bleu
+    color_middle = np.array([0.0, 1.0, 0.0])  # Vert
+    color_end = np.array([1.0, 0.0, 0.0])    # Rouge
+
+    # Générer N couleurs par interpolation linéaire
+    couleurs = []
+    for i in range(N):
+        ratio = i / N  # Calculer le ratio d'interpolation
+        couleur = color_start * (1 - ratio) + color_end * ratio # Interpolation linéaire
+        couleurs.append(couleur.tolist())
+
+    # Création de la table de couleurs (N+1 couleurs)
+    for i, seuil in enumerate(seuils_temperature):
+        rgb_points.append(seuil)
+        rgb_points.extend(couleurs[i])  # Ajoute la couleur correspondant à ce seuil
+
+    # Ajouter la dernière couleur (si souhaitée)
+    rgb_points.append(seuils_temperature[-1] + 1)  # Valeur supérieure à la dernière température
+    rgb_points.extend(couleurs[-1])  # Dernière couleur
+
+else :
+    rgb_points.append(0)
+    rgb_points.extend(np.array([0.5, 0.5, 0.5]))
+
 # create a new 'Extract Subset'
 temperatureSubset = ExtractSubset(registrationName='TemperatureSubset', Input=temperatureCalculator)
 temperatureSubset.Set(
@@ -217,19 +251,8 @@ tempratureSubdivisionDisplay = Show(tempratureSubdivision, renderView1, 'Geometr
 # get color transfer function/color map for 'Temperature'
 temperatureLUT = GetColorTransferFunction('Temperature')
 temperatureLUT.Set(
-    RGBPoints=[
-        # scalar, red, green, blue
-        -16.690899077217523, 0.0564, 0.0564, 0.47,
-        -10.812571624600016, 0.243, 0.46035, 0.81,
-        -6.4653183994513554, 0.356814, 0.745025, 0.954368,
-        -1.8872033118429687, 0.6882, 0.93, 0.91791,
-        0.71268630027771, 0.899496, 0.944646, 0.768657,
-        3.4603028677646783, 0.957108, 0.833819, 0.508916,
-        7.499785953079805, 0.927521, 0.621439, 0.315357,
-        12.34719991304253, 0.8, 0.352, 0.16,
-        17.56668549908852, 0.59, 0.0767, 0.119475,
-    ],
-    NumberOfTableValues=12,
+    RGBPoints=rgb_points,
+    NumberOfTableValues=len(seuils_temperature) + 1,
     ScalarRangeInitialized=1.0,
 )
 
@@ -271,9 +294,9 @@ ventFlechesDisplay = Show(ventFleches, renderView1, 'GeometryRepresentation')
 # trace defaults for the display properties.
 ventFlechesDisplay.Set(
     Representation='Surface',
-    AmbientColor=[0.0, 0.6, 0.0],
+    AmbientColor=[1.0, 1.0, 1.0],
     ColorArrayName=[None, ''],
-    DiffuseColor=[0.0, 0.6, 0.0],
+    DiffuseColor=[1.0, 1.0, 1.0],
     LineWidth=2.0,
 )
 
@@ -329,19 +352,8 @@ tempratureSubdivisionDisplay2 = Show(tempratureSubdivision, renderView2, 'Geomet
 # get color transfer function/color map for 'Temperature'
 temperatureLUT2 = GetColorTransferFunction('Temperature')
 temperatureLUT2.Set(
-    RGBPoints=[
-        # scalar, red, green, blue
-        -16.690899077217523, 0.0564, 0.0564, 0.47,
-        -10.812571624600016, 0.243, 0.46035, 0.81,
-        -6.4653183994513554, 0.356814, 0.745025, 0.954368,
-        -1.8872033118429687, 0.6882, 0.93, 0.91791,
-        0.71268630027771, 0.899496, 0.944646, 0.768657,
-        3.4603028677646783, 0.957108, 0.833819, 0.508916,
-        7.499785953079805, 0.927521, 0.621439, 0.315357,
-        12.34719991304253, 0.8, 0.352, 0.16,
-        17.56668549908852, 0.59, 0.0767, 0.119475,
-    ],
-    NumberOfTableValues=12,
+    RGBPoints=rgb_points,
+    NumberOfTableValues=len(seuils_temperature) + 1,
     ScalarRangeInitialized=1.0,
 )
 
@@ -382,9 +394,9 @@ ventFlechesDisplay2 = Show(ventFleches, renderView2, 'GeometryRepresentation')
 # trace defaults for the display properties.
 ventFlechesDisplay2.Set(
     Representation='Surface',
-    AmbientColor=[0.0, 0.6, 0.0],
+    AmbientColor=[1.0, 1.0, 1.0],
     ColorArrayName=[None, ''],
-    DiffuseColor=[0.0, 0.6, 0.0],
+    DiffuseColor=[1.0, 1.0, 1.0],
     LineWidth=2.0,
 )
 

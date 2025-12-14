@@ -188,7 +188,7 @@ if (ShowIsolines) :
 	)
 
 # create a new 'GDAL Vector Reader'
-departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='/home/pierre/Documents/Info5/Visu/VISU_DONNEES_INFO5/Projet/departements-20140306-100m-shp/departements-20140306-100m.shp')
+departements20140306100mshp = GDALVectorReader(registrationName='departements-20140306-100m.shp', FileName='departements-20140306-100m-shp/departements-20140306-100m.shp')
 
 # create a new 'Extract Selection'
 extractSelection1 = ExtractSelection(registrationName='ExtractSelection1', Input=departements20140306100mshp,

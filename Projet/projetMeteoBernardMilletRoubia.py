@@ -59,11 +59,11 @@ renderView1 = CreateView('RenderView')
 renderView1.Set(
     ViewSize=[1920, 1080],
     InteractionMode='2D',
-    CenterOfRotation=[2.0, 46.45000076293945, 0.0],
-    CameraPosition=[2.0, 46.45000076293945, 64.20057971900172],
-    CameraFocalPoint=[2.0, longitude, latitude],
+    CenterOfRotation=[latitude, longitude, 0.0],
+    CameraPosition=[latitude, longitude, 64.20057971900172],
+    CameraFocalPoint=[latitude, longitude, 0.0],
     CameraFocalDisk=1.0,
-    CameraParallelScale=1.616332737900287,
+    CameraParallelScale=0.616332737900287,
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -72,11 +72,11 @@ renderView2 = CreateView('RenderView')
 renderView2.Set(
     ViewSize=[1920, 1080],
     InteractionMode='2D',
-    CenterOfRotation=[2.0, 46.45000076293945, 0.0],
-    CameraPosition=[2.0, 46.45000076293945, 64.20057971900172],
-    CameraFocalPoint=[2.0, longitude, latitude],
+    CenterOfRotation=[2.0, 46.0, 0.0],
+    CameraPosition=[2.0, 46.0, 34.20057971900172],
+    CameraFocalPoint=[2.0, 46.0, 5.8441357],
     CameraFocalDisk=1.0,
-    CameraParallelScale=8.950149718542106, # zoom
+    CameraParallelScale=5.5, # zoom
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -156,7 +156,7 @@ ventSubset.Set(
 ventThreshold = Threshold(registrationName='VentThreshold', Input=ventSubset)
 ventThreshold.Set(
     Scalars=['POINTS', 'VentVecteur'],
-    UpperThreshold=3.0,
+    UpperThreshold=0.0,
     ThresholdMethod='Above Upper Threshold',
 )
 
@@ -271,9 +271,9 @@ ventFlechesDisplay = Show(ventFleches, renderView1, 'GeometryRepresentation')
 # trace defaults for the display properties.
 ventFlechesDisplay.Set(
     Representation='Surface',
-    AmbientColor=[0.6, 0.6, 0.6],
+    AmbientColor=[0.0, 0.6, 0.0],
     ColorArrayName=[None, ''],
-    DiffuseColor=[0.6, 0.6, 0.6],
+    DiffuseColor=[0.0, 0.6, 0.0],
     LineWidth=2.0,
 )
 
@@ -382,9 +382,9 @@ ventFlechesDisplay2 = Show(ventFleches, renderView2, 'GeometryRepresentation')
 # trace defaults for the display properties.
 ventFlechesDisplay2.Set(
     Representation='Surface',
-    AmbientColor=[0.6, 0.6, 0.6],
+    AmbientColor=[0.0, 0.6, 0.0],
     ColorArrayName=[None, ''],
-    DiffuseColor=[0.6, 0.6, 0.6],
+    DiffuseColor=[0.0, 0.6, 0.0],
     LineWidth=2.0,
 )
 
@@ -417,9 +417,6 @@ tempratureSubdivisionDisplay2.SetScalarBarVisibility(renderView2, True)
 if (ShowIsolines) :
 	# show color legend
 	temperatureIsolinesDisplay2.SetScalarBarVisibility(renderView2, True)
-	
-# Fit all visible data in view 1
-renderView2.ResetCamera()
 
 # ----------------------------------------------------------------
 # setup color maps and opacity maps used 

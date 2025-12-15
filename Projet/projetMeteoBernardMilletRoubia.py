@@ -238,8 +238,7 @@ tempratureSubdivisionDisplay = Show(tempratureSubdivision, renderView1, 'Geometr
 
 # get color transfer function/color map for 'Temperature'
 temperatureLUT = GetColorTransferFunction('Temperature')
-temperatureLUT.RescaleTransferFunction(min(seuils_temperature), max(seuils_temperature))
-temperatureLUT.NumberOfTableValues=len(seuils_temperature) - 1
+temperatureLUT.NumberOfTableValues=len(seuils_temperature) + 1
 temperatureLUT.Discretize = 1
 
 
@@ -338,8 +337,7 @@ tempratureSubdivisionDisplay2 = Show(tempratureSubdivision, renderView2, 'Geomet
 
 # get color transfer function/color map for 'Temperature'
 temperatureLUT2 = GetColorTransferFunction('Temperature')
-temperatureLUT2.RescaleTransferFunction(min(seuils_temperature), max(seuils_temperature))
-temperatureLUT2.NumberOfTableValues=len(seuils_temperature) - 1
+temperatureLUT2.NumberOfTableValues=len(seuils_temperature) + 1
 temperatureLUT2.Discretize = 1
 
 # trace defaults for the display properties.

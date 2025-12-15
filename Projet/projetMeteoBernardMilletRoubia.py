@@ -24,6 +24,7 @@ if (len(sys.argv) >= 5) :
 	ShowIsolines = True
 	
 if ((len(sys.argv) < 4) or (sys.argv[1].split("/")[-1].split(".")[-1] != "nc") or ()) :
+	print("File error")
 	usageprint()
 
 
@@ -41,17 +42,20 @@ fileName = sys.argv[1]
 try:
 	longitude = float(sys.argv[2])
 except ValueError:
+	print("Longitude Error")
 	usageprint()
 
 try:
 	latitude = float(sys.argv[3])
 except ValueError:
+	print("Latitude Error")
 	usageprint()
 
 try:
 	for i in sys.argv[4:] :
 		float(i) 
 except ValueError:
+	print("Temperature Error")
 	usageprint()
 
 # get the material library
@@ -132,25 +136,6 @@ temperatureCalculator.Set(
     Function='t2m - 273.15',
 )
 
-# Tri des seuils de température
-seuils_temperature = sorted([float(i) for i in sys.argv[4:]])
-
-# Nombre de couleurs à générer (N)
-N = len(seuils_temperature)
-rgb_points = []
-
-if(N > 0):
-    RGBPoints=GenerateRGBPoints(
-        range_min=min(seuils_temperature),
-        range_max=max(seuils_temperature),
-    )
-    for i in range(0,N,4):
-        rgb_points.append(seuils_temperature[i])
-        rgb_points.extend(RGBPoints[i+1:i+4])
-else :
-    rgb_points.append(0)
-    rgb_points.extend(np.array([0.5, 0.5, 0.5]))
-
 # create a new 'Extract Subset'
 temperatureSubset = ExtractSubset(registrationName='TemperatureSubset', Input=temperatureCalculator)
 temperatureSubset.Set(
@@ -178,7 +163,7 @@ ventSubset.Set(
 ventThreshold = Threshold(registrationName='VentThreshold', Input=ventSubset)
 ventThreshold.Set(
     Scalars=['POINTS', 'VentVecteur'],
-    UpperThreshold=0.0,
+    UpperThreshold=3.0,
     ThresholdMethod='Above Upper Threshold',
 )
 
@@ -236,22 +221,47 @@ extractSelection1Display.Set(
 # show data from tempratureSubdivision
 tempratureSubdivisionDisplay = Show(tempratureSubdivision, renderView1, 'GeometryRepresentation')
 
-# get color transfer function/color map for 'Temperature'
-temperatureLUT = GetColorTransferFunction('Temperature')
+# get color transfer function for 'Temperature'
+temperatureLUT = GetColorTransferFunction("Temperature_View1")
 
-if ShowIsolines :
-	temperatureLUT.NumberOfTableValues=len(seuils_temperature) + 1
-	temperatureLUT.Discretize = 1
-else :
-	temperatureLUT.NumberOfTableValues=12,
-	temperatureLUT.RescaleTransferFunctionToDataRange(True)
+# Get actual temperature range
+vmin, vmax = temperatureSubset.GetPointDataInformation().GetArray('Temperature').GetRange()
+rgb_points = []
 
-# trace defaults for the display properties.
-tempratureSubdivisionDisplay.Set(
-    Representation='Surface',
-    ColorArrayName=['POINTS', 'Temperature'],
-    LookupTable=temperatureLUT,
-)
+if ShowIsolines:
+    # Define isoline thresholds including min/max
+    seuils_temperature = [vmin] + sorted([float(i) for i in sys.argv[4:] if vmin <= float(i) <= vmax]) + [vmax]
+
+    # Number of intervals
+    N = len(seuils_temperature) - 1
+
+    # Colormap
+    cmap = plt.get_cmap("coolwarm", N)
+
+    for i in range(N):
+        val_start = seuils_temperature[i]
+        val_end = seuils_temperature[i+1]
+        r, g, b, _ = cmap(i)
+        
+        # Start of interval
+        rgb_points.extend([val_start, r, g, b])
+        # Just before end of interval
+        rgb_points.extend([val_end, r, g, b])
+    
+    # Apply to LUT
+    temperatureLUT.RGBPoints = rgb_points
+    temperatureLUT.ColorSpace = "RGB"
+    temperatureLUT.Discretize = N
+    temperatureLUT.RescaleTransferFunction(seuils_temperature[0], seuils_temperature[-1])
+
+else:
+    temperatureLUT.NumberOfTableValues = 12
+    temperatureLUT.RescaleTransferFunctionToDataRange(True)
+
+# Assign to display
+tempratureSubdivisionDisplay.LookupTable = temperatureLUT
+tempratureSubdivisionDisplay.ColorArrayName = ['POINTS', 'Temperature']
+tempratureSubdivisionDisplay.SetScalarBarVisibility(renderView1, True)
 
 # init the 'Piecewise Function' selected for 'ScaleTransferFunction'
 tempratureSubdivisionDisplay.ScaleTransferFunction.Points = [-16.690899077217523, 0.0, 0.5, 0.0, 17.2422944288289, 1.0, 0.5, 0.0]
@@ -340,20 +350,32 @@ extractSelection1Display2.Set(
 tempratureSubdivisionDisplay2 = Show(tempratureSubdivision, renderView2, 'GeometryRepresentation')
 
 # get color transfer function/color map for 'Temperature'
-temperatureLUT2 = GetColorTransferFunction('Temperature')
+temperatureLUT2 = GetColorTransferFunction('Temperature_View2')
 
+if ShowIsolines:    
+    temperatureLUT2.RGBPoints = rgb_points
+    temperatureLUT2.ColorSpace = "RGB"
+    temperatureLUT2.Discretize = N
+    temperatureLUT2.RescaleTransferFunction(seuils_temperature[0], seuils_temperature[-1])
+
+else:
+    temperatureLUT.NumberOfTableValues = 12
+    temperatureLUT.RescaleTransferFunctionToDataRange(True)
+
+'''
 if ShowIsolines :
 	temperatureLUT2.NumberOfTableValues=len(seuils_temperature) + 1
 	temperatureLUT2.Discretize = 1
 else :
 	temperatureLUT2.NumberOfTableValues=12,
 	temperatureLUT2.RescaleTransferFunctionToDataRange(True)
+'''
 
 # trace defaults for the display properties.
 tempratureSubdivisionDisplay2.Set(
     Representation='Surface',
     ColorArrayName=['POINTS', 'Temperature'],
-    LookupTable=temperatureLUT,
+    LookupTable=temperatureLUT2,
 )
 
 # init the 'Piecewise Function' selected for 'ScaleTransferFunction'
@@ -370,7 +392,7 @@ if (ShowIsolines) :
 	temperatureIsolinesDisplay2.Set(
 		Representation='Surface',
 		ColorArrayName=['POINTS', 'Temperature'],
-		LookupTable=temperatureLUT,
+		LookupTable=temperatureLUT2,
 		LineWidth=3.0,
 	)
 

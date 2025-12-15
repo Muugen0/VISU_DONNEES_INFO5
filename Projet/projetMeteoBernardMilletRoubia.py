@@ -3,6 +3,8 @@ import paraview
 import sys
 import math
 import numpy as np
+import matplotlib.pyplot as plt
+
 paraview.compatibility.major = 6
 paraview.compatibility.minor = 0
 
@@ -138,27 +140,13 @@ N = len(seuils_temperature)
 rgb_points = []
 
 if(N > 0):
-    # Définir les couleurs de départ (par exemple bleu et rouge)
-    color_start = np.array([0.0, 0.0, 1.0])  # Bleu
-    color_middle = np.array([0.0, 1.0, 0.0])  # Vert
-    color_end = np.array([1.0, 0.0, 0.0])    # Rouge
-
-    # Générer N couleurs par interpolation linéaire
-    couleurs = []
-    for i in range(N):
-        ratio = i / N  # Calculer le ratio d'interpolation
-        couleur = color_start * (1 - ratio) + color_end * ratio # Interpolation linéaire
-        couleurs.append(couleur.tolist())
-
-    # Création de la table de couleurs (N+1 couleurs)
-    for i, seuil in enumerate(seuils_temperature):
-        rgb_points.append(seuil)
-        rgb_points.extend(couleurs[i])  # Ajoute la couleur correspondant à ce seuil
-
-    # Ajouter la dernière couleur (si souhaitée)
-    rgb_points.append(seuils_temperature[-1] + 1)  # Valeur supérieure à la dernière température
-    rgb_points.extend(couleurs[-1])  # Dernière couleur
-
+    RGBPoints=GenerateRGBPoints(
+        range_min=min(seuils_temperature),
+        range_max=max(seuils_temperature),
+    )
+    for i in range(0,N,4):
+        rgb_points.append(seuils_temperature[i])
+        rgb_points.extend(RGBPoints[i+1:i+4])
 else :
     rgb_points.append(0)
     rgb_points.extend(np.array([0.5, 0.5, 0.5]))
@@ -250,11 +238,10 @@ tempratureSubdivisionDisplay = Show(tempratureSubdivision, renderView1, 'Geometr
 
 # get color transfer function/color map for 'Temperature'
 temperatureLUT = GetColorTransferFunction('Temperature')
-temperatureLUT.Set(
-    RGBPoints=rgb_points,
-    NumberOfTableValues=len(seuils_temperature) + 1,
-    ScalarRangeInitialized=1.0,
-)
+temperatureLUT.RescaleTransferFunction(min(seuils_temperature), max(seuils_temperature))
+temperatureLUT.NumberOfTableValues=len(seuils_temperature) - 1
+temperatureLUT.Discretize = 1
+
 
 # trace defaults for the display properties.
 tempratureSubdivisionDisplay.Set(
@@ -351,11 +338,9 @@ tempratureSubdivisionDisplay2 = Show(tempratureSubdivision, renderView2, 'Geomet
 
 # get color transfer function/color map for 'Temperature'
 temperatureLUT2 = GetColorTransferFunction('Temperature')
-temperatureLUT2.Set(
-    RGBPoints=rgb_points,
-    NumberOfTableValues=len(seuils_temperature) + 1,
-    ScalarRangeInitialized=1.0,
-)
+temperatureLUT2.RescaleTransferFunction(min(seuils_temperature), max(seuils_temperature))
+temperatureLUT2.NumberOfTableValues=len(seuils_temperature) - 1
+temperatureLUT2.Discretize = 1
 
 # trace defaults for the display properties.
 tempratureSubdivisionDisplay2.Set(

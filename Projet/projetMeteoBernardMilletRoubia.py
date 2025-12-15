@@ -362,15 +362,6 @@ else:
     temperatureLUT.NumberOfTableValues = 12
     temperatureLUT.RescaleTransferFunctionToDataRange(True)
 
-'''
-if ShowIsolines :
-	temperatureLUT2.NumberOfTableValues=len(seuils_temperature) + 1
-	temperatureLUT2.Discretize = 1
-else :
-	temperatureLUT2.NumberOfTableValues=12,
-	temperatureLUT2.RescaleTransferFunctionToDataRange(True)
-'''
-
 # trace defaults for the display properties.
 tempratureSubdivisionDisplay2.Set(
     Representation='Surface',
@@ -423,7 +414,7 @@ ventFlechesDisplay2.OpacityTransferFunction.Points = [5.01715033100156, 0.0, 0.5
 # setup the color legend parameters for each legend in this view
 
 # get color legend/bar for temperatureLUT in view renderView1
-temperatureLUTColorBar2 = GetScalarBar(temperatureLUT, renderView2)
+temperatureLUTColorBar2 = GetScalarBar(temperatureLUT2, renderView2)
 temperatureLUTColorBar2.Set(
     WindowLocation='Upper Right Corner',
     Title='Temperature',

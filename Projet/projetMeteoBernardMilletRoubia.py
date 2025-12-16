@@ -70,7 +70,7 @@ renderView1.Set(
     CameraPosition=[latitude, longitude, 64.20057971900172],
     CameraFocalPoint=[latitude, longitude, 0.0],
     CameraFocalDisk=1.0,
-    CameraParallelScale=0.616332737900287,
+    CameraParallelScale=0.616332737900287, #zoomé
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -83,7 +83,7 @@ renderView2.Set(
     CameraPosition=[2.0, 46.0, 34.20057971900172],
     CameraFocalPoint=[2.0, 46.0, 5.8441357],
     CameraFocalDisk=1.0,
-    CameraParallelScale=5.5, # zoom
+    CameraParallelScale=5.5,
     OSPRayMaterialLibrary=materialLibrary1,
 )
 
@@ -147,12 +147,19 @@ temperatureSubset.Set(
 # create a new 'Calculator'
 ventCalculator = Calculator(registrationName='VentCalculator', Input=a12dec6hnc)
 ventCalculator.Set(
-    ResultArrayName='VentVecteur',
+    ResultArrayName='VentVecteurMs',
     Function='u10*iHat+v10*jHat',
 )
 
+# create a new 'Calculator'
+ventCalculatorKmH = Calculator(registrationName='VentCalculatorKmH', Input=ventCalculator)
+ventCalculatorKmH.Set(
+    ResultArrayName='VentVecteur',
+    Function='VentVecteurMs*3.6',
+)
+
 # create a new 'Extract Subset'
-ventSubset = ExtractSubset(registrationName='VentSubset', Input=ventCalculator)
+ventSubset = ExtractSubset(registrationName='VentSubset', Input=ventCalculatorKmH)
 ventSubset.Set(
     VOI=[0, 1120, 0, 716, 0, 0],
     SampleRateI=25,
@@ -256,7 +263,7 @@ if ShowIsolines:
 
 else:
     temperatureLUT.NumberOfTableValues = 12
-    temperatureLUT.RescaleTransferFunctionToDataRange(True)
+    temperatureLUT.RescaleTransferFunction(vmin,vmax)
 
 # Assign to display
 tempratureSubdivisionDisplay.LookupTable = temperatureLUT
@@ -352,15 +359,14 @@ tempratureSubdivisionDisplay2 = Show(tempratureSubdivision, renderView2, 'Geomet
 # get color transfer function/color map for 'Temperature'
 temperatureLUT2 = GetColorTransferFunction('Temperature_View2')
 
-if ShowIsolines:    
+if (ShowIsolines):    
     temperatureLUT2.RGBPoints = rgb_points
     temperatureLUT2.ColorSpace = "RGB"
     temperatureLUT2.Discretize = N
     temperatureLUT2.RescaleTransferFunction(seuils_temperature[0], seuils_temperature[-1])
-
 else:
-    temperatureLUT.NumberOfTableValues = 12
-    temperatureLUT.RescaleTransferFunctionToDataRange(True)
+    temperatureLUT2.NumberOfTableValues = 12
+    temperatureLUT2.RescaleTransferFunction(vmin,vmax)
 
 # trace defaults for the display properties.
 tempratureSubdivisionDisplay2.Set(
@@ -519,12 +525,12 @@ SetActiveSource(a12dec6hnc)
 ## Render all views to see them appears
 RenderAllViews()
 #
-## Interact with the view, usefull when running from pvpython
-Interact()
-#
 ## Save a screenshot of both viex
 SaveScreenshot("testParaview1.png", view=renderView1)
 SaveScreenshot("testParaview2.png", view=renderView2)
+#
+## Interact with the view, usefull when running from pvpython
+Interact()
 #
 ## Save a screenshot of a layout (multiple splitted view)
 # SaveScreenshot("path/to/screenshot.png", GetLayout())

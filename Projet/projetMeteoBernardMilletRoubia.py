@@ -520,6 +520,10 @@ animationScene2.Set(
 timesteps = timeKeeper2.TimestepValues
 current = {'i': 0}
 
+frameText = Text()
+
+
+
 def next_frame(obj, event):
     key = obj.GetKeySym()
 
@@ -529,9 +533,17 @@ def next_frame(obj, event):
     current['i'] = (current['i'] + 1) % len(timesteps)
     timeKeeper2.Time = timesteps[current['i']]
     timeKeeper1.Time = timesteps[current['i']]
+    frameText.Text = f"Frame: {current['i']+1} / {len(timesteps)}"
     RenderAllViews()
 
     print("Frame:", current['i'])
+    
+frameText.Text = f"Frame: {current['i']+1} / {len(timesteps)}"
+frameTextDisplay1 = Show(frameText, renderView1)
+frameTextDisplay2 = Show(frameText, renderView2)
+
+frameTextDisplay1.WindowLocation = 'Upper Left Corner'
+frameTextDisplay2.WindowLocation = 'Upper Left Corner'
 
 renderView1.GetInteractor().AddObserver("KeyPressEvent", next_frame)
 renderView2.GetInteractor().AddObserver("KeyPressEvent", next_frame)

@@ -514,6 +514,30 @@ animationScene2.Set(
 # initialize the animation scene
 
 # ----------------------------------------------------------------
+# Add listener to change frame
+# ----------------------------------------------------------------
+
+timesteps = timeKeeper2.TimestepValues
+current = {'i': 0}
+
+def next_frame(obj, event):
+    key = obj.GetKeySym()
+
+    if key != 'n':
+        return
+
+    current['i'] = (current['i'] + 1) % len(timesteps)
+    timeKeeper2.Time = timesteps[current['i']]
+    timeKeeper1.Time = timesteps[current['i']]
+    RenderAllViews()
+
+    print("Frame:", current['i'])
+
+renderView1.GetInteractor().AddObserver("KeyPressEvent", next_frame)
+renderView2.GetInteractor().AddObserver("KeyPressEvent", next_frame)
+
+
+# ----------------------------------------------------------------
 # restore active source
 SetActiveSource(a12dec6hnc)
 # ----------------------------------------------------------------

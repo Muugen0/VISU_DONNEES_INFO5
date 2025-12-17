@@ -4,6 +4,7 @@ import sys
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import datetime
 
 paraview.compatibility.major = 6
 paraview.compatibility.minor = 0
@@ -517,11 +518,18 @@ animationScene2.Set(
 # Add listener to change frame
 # ----------------------------------------------------------------
 
+
 timesteps = timeKeeper2.TimestepValues
 current = {'i': 0}
 
 frameText = Text()
 
+reference_date = datetime.datetime(1900, 1, 1)
+
+def format_time(t):
+    # t is already in hours, so just add it to reference date
+    dt = reference_date + datetime.timedelta(hours=t-3)
+    return dt.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def next_frame(obj, event):
@@ -533,12 +541,15 @@ def next_frame(obj, event):
     current['i'] = (current['i'] + 1) % len(timesteps)
     timeKeeper2.Time = timesteps[current['i']]
     timeKeeper1.Time = timesteps[current['i']]
-    frameText.Text = f"Frame: {current['i']+1} / {len(timesteps)}"
+
+    # Display actual date/time
+    frameText.Text = f"Time: {format_time(timesteps[current['i']])}"
     RenderAllViews()
 
-    print("Frame:", current['i'])
-    
-frameText.Text = f"Frame: {current['i']+1} / {len(timesteps)}"
+    #print("Time:", format_time(timesteps[current['i']]))
+
+# Initialize display
+frameText.Text = f"Time: {format_time(timesteps[current['i']])}"
 frameTextDisplay1 = Show(frameText, renderView1)
 frameTextDisplay2 = Show(frameText, renderView2)
 

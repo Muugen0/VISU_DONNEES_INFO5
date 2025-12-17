@@ -573,8 +573,8 @@ SetActiveSource(a12dec6hnc)
 RenderAllViews()
 #
 ## Save a screenshot of both viex
-SaveScreenshot("testParaview1.png", view=renderView1)
-SaveScreenshot("testParaview2.png", view=renderView2)
+SaveScreenshot("VueLocaleRoubiaMilletBernard.png", view=renderView1)
+SaveScreenshot("VueGlobaleRoubiaMilletBernard.png", view=renderView2)
 #
 ## Interact with the view, usefull when running from pvpython
 Interact()
